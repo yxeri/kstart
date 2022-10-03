@@ -3,7 +3,7 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { PersonInformation } from "../models/PersonInformation";
 import styles from "../styles/Home.module.css";
 
-const Form: NextPage = () => {
+const FormWithoutRHF: NextPage = () => {
   const [personInformation, setPersonInformation] = useState<PersonInformation>(
     { firstName: "", lastName: "" }
   );
@@ -63,4 +63,4 @@ const Form: NextPage = () => {
   );
 };
 
-export default Form;
+export default FormWithoutRHF;
