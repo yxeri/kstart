@@ -16,9 +16,7 @@ const FormReactHookForm: NextPage = () => {
     formState,
     formState: { isSubmitSuccessful },
   } = useForm<IFormInput>();
-  const [personInformation, setPersonInformation] = useState<PersonInformation>(
-    { firstName: "", lastName: "" }
-  );
+
   const [personList, setPersonList] = useState<PersonInformation[]>([]);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
