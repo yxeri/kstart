@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { PersonInformation } from "../models/PersonInformation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Person } from "../components/Person";
 
 interface IFormInput {
   firstName: string;
@@ -13,7 +14,6 @@ const FormReactHookForm: NextPage = () => {
     register,
     handleSubmit,
     reset,
-    formState,
     formState: { isSubmitSuccessful },
   } = useForm<IFormInput>();
 
@@ -27,10 +27,16 @@ const FormReactHookForm: NextPage = () => {
   };
 
   useEffect(() => {
-    if (formState.isSubmitSuccessful) {
+    if (isSubmitSuccessful) {
       reset({ firstName: "", lastName: "" });
     }
-  }, [formState, reset]);
+  }, [isSubmitSuccessful, reset]);
+
+  console.log("personList", personList);
+
+  const persons = personList.map((person, i) => {
+    return <Person person={person} key={i} />;
+  });
 
   return (
     <>
@@ -41,16 +47,7 @@ const FormReactHookForm: NextPage = () => {
         <input {...register("lastName", { required: true, minLength: 2 })} />
         <button type="submit">Submit</button>
       </form>
-      {personList.map((person, i) => {
-        return (
-          <div key={i}>
-            <p>
-              First Name: {person.firstName} Last Name: {person.lastName}
-            </p>
-            <p></p>
-          </div>
-        );
-      })}
+      {persons}
     </>
   );
 };
