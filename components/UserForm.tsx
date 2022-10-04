@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { User } from "./User";
 import { IUserInformation } from "../models/userInformation";
+import styles from "../styles/UserForms.module.css";
 
 const UserForm = () => {
   const [userInformation, setUserInformation] = useState<IUserInformation>({
@@ -8,6 +9,7 @@ const UserForm = () => {
     lastName: "",
     email: "",
   });
+
   const [userList, setUserList] = useState<IUserInformation[]>([]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,41 +31,52 @@ const UserForm = () => {
     setUserInformation({ firstName: "", lastName: "", email: "" });
   };
 
-  const usersToComponent = userList.map((user, i) => {
-    return <User user={user} key={i} />;
+  const usersToComponent = userList.map((user, j) => {
+    return <User user={user} key={j} />;
   });
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="firstName"> First Name</label>
-        <input
-          type="text"
-          name="firstName"
-          id="firstName"
-          value={userInformation.firstName}
-          onChange={handleChange}
-        />
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          type="text"
-          name="lastName"
-          id="lastName"
-          value={userInformation.lastName}
-          onChange={handleChange}
-        />
-        <label htmlFor="email">E-mail</label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          value={userInformation.email}
-          onChange={handleChange}
-        />
-        <button type="submit">Submit</button>
+    <div className={styles.container}>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.labelInputContainer}>
+          <label htmlFor="firstName"> First Name</label>
+          <input
+            className={styles.input}
+            type="text"
+            name="firstName"
+            id="firstName"
+            value={userInformation.firstName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.labelInputContainer}>
+          <label htmlFor="lastName">Last Name</label>
+          <input
+            className={styles.input}
+            type="text"
+            name="lastName"
+            id="lastName"
+            value={userInformation.lastName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.labelInputContainer}>
+          <label htmlFor="email">E-mail</label>
+          <input
+            className={styles.input}
+            type="email"
+            name="email"
+            id="email"
+            value={userInformation.email}
+            onChange={handleChange}
+          />
+        </div>
+        <button className={styles.button} type="submit">
+          Submit
+        </button>
       </form>
       {usersToComponent}
-    </>
+    </div>
   );
 };
 
