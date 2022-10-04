@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { IUserInformation } from "../models/userInformation";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { User } from "./User";
+import { useSetRecoilState } from "recoil";
+import { userListState } from "../atoms/atoms";
 
 const UserFormReactHookForm = () => {
   const {
@@ -10,13 +11,11 @@ const UserFormReactHookForm = () => {
     reset,
     formState: { isSubmitSuccessful },
   } = useForm<IUserInformation>();
-
-  const [users, setPersonList] = useState<IUserInformation[]>([]);
-
-  const onSubmit: SubmitHandler<IUserInformation> = (data) => {
-    setPersonList((current) => [
+  const setUserList = useSetRecoilState(userListState);
+  const onSubmit: SubmitHandler<IUserInformation> = (user) => {
+    setUserList((current) => [
       ...current,
-      { firstName: data.firstName, lastName: data.lastName, email: data.email },
+      { firstName: user.firstName, lastName: user.lastName, email: user.email },
     ]);
   };
 
@@ -25,10 +24,6 @@ const UserFormReactHookForm = () => {
       reset({ firstName: "", lastName: "", email: "" });
     }
   }, [isSubmitSuccessful, reset]);
-
-  const usersToComponent = users.map((user, i) => {
-    return <User user={user} key={i} />;
-  });
 
   return (
     <>
@@ -41,7 +36,6 @@ const UserFormReactHookForm = () => {
         <input {...register("email", { required: true })} />
         <button type="submit">Submit</button>
       </form>
-      {usersToComponent}
     </>
   );
 };

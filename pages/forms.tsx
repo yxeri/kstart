@@ -1,7 +1,8 @@
 import { NextPage } from "next";
 import { useState } from "react";
-import UserForm from "../components/userForm";
-import UserFormReactHookForm from "../components/userFormReactHookForm";
+import UserForm from "../components/UserForm";
+import UserFormReactHookForm from "../components/UserFormReactHookForm";
+import { UserList } from "../components/UserList";
 
 const Forms: NextPage = () => {
   const [showRHF, setShowRHF] = useState(false);
@@ -14,6 +15,7 @@ const Forms: NextPage = () => {
       <button onClick={showOtherForm}>
         {showRHF ? "without React hook form" : "with react hook form"}
       </button>
+      <UserList />
     </div>
   );
 };
