@@ -10,7 +10,7 @@ const UserFormReactHookForm = () => {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitSuccessful },
+    formState: { isSubmitSuccessful, errors },
   } = useForm<IUserInformation>();
 
   const setUserList = useSetRecoilState(userListState);
@@ -37,6 +37,11 @@ const UserFormReactHookForm = () => {
             className={styles.input}
             {...register("firstName", { required: true, minLength: 2 })}
           />
+          {errors.firstName && (
+            <p className={styles.error}>
+              First name longer than two characters is required
+            </p>
+          )}
         </div>
         <div className={styles.labelInputContainer}>
           <label htmlFor="lastName">Last Name</label>
@@ -44,6 +49,11 @@ const UserFormReactHookForm = () => {
             className={styles.input}
             {...register("lastName", { required: true, minLength: 2 })}
           />
+          {errors.lastName && (
+            <p className={styles.error}>
+              Last name longer than two characters is required
+            </p>
+          )}
         </div>
         <div className={styles.labelInputContainer}>
           <label htmlFor="email">Email</label>
@@ -55,6 +65,9 @@ const UserFormReactHookForm = () => {
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             })}
           />
+          {errors.email && (
+            <p className={styles.error}>Please enter a valid email adress</p>
+          )}
         </div>
         <button className={styles.button} type="submit">
           Submit
