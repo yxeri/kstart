@@ -1,7 +1,13 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, FocusEvent } from "react";
 import { User } from "./User";
 import { IUserInformation } from "../models/userInformation";
 import styles from "../styles/UserForms.module.css";
+import { validateForm } from "../validation/validateUserForm";
+import { IValidation } from "../models/validationModel";
+import { formData } from "../formData/formData";
+import { Input } from "./Input";
+
+type fields = "firstName" | "lastName" | "email";
 
 const UserForm = () => {
   const [userInformation, setUserInformation] = useState<IUserInformation>({
@@ -12,65 +18,70 @@ const UserForm = () => {
 
   const [userList, setUserList] = useState<IUserInformation[]>([]);
 
+  const [validation, setValidation] = useState<Map<string, IValidation>>(
+    new Map()
+  );
+
+  const validateForms: fields[] = ["firstName", "lastName", "email"];
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setUserInformation({
       ...userInformation,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (
-      userInformation.firstName !== "" &&
-      userInformation.lastName !== "" &&
-      userInformation.email !== ""
-    ) {
-      setUserList((current) => [...current, userInformation]);
+
+    const updateValidation = new Map(validation);
+    validateForms.forEach((id) => {
+      const validationInformation: IValidation = validateForm(
+        userInformation[id],
+        id
+      );
+      updateValidation.set(validationInformation.id, validationInformation);
+    });
+    setValidation(updateValidation);
+
+    const validationObjects = Array.from(updateValidation.values());
+    if (validationObjects.every((values) => values.isActive === false)) {
+      setUserList((userList) => [...userList, userInformation]);
+      setUserInformation({
+        firstName: "",
+        lastName: "",
+        email: "",
+      });
+      setValidation(new Map());
     }
-    setUserInformation({ firstName: "", lastName: "", email: "" });
+  };
+
+  const handleValidation = (updateValidation: Map<string, IValidation>) => {
+    setValidation(updateValidation);
   };
 
   const usersToComponent = userList.map((user, j) => {
     return <User user={user} key={j} />;
   });
 
+  const inputs = formData.map((inputInformation) => {
+    return (
+      <Input
+        key={inputInformation.id}
+        inputInformation={inputInformation}
+        handleValidation={handleValidation}
+        handleChange={handleChange}
+        validation={validation}
+        userInformation={userInformation}
+      ></Input>
+    );
+  });
+
   return (
     <div className={styles.container}>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <div className={styles.labelInputContainer}>
-          <label htmlFor="firstName"> First Name</label>
-          <input
-            className={styles.input}
-            type="text"
-            name="firstName"
-            id="firstName"
-            value={userInformation.firstName}
-            onChange={handleChange}
-          />
-        </div>
-        <div className={styles.labelInputContainer}>
-          <label htmlFor="lastName">Last Name</label>
-          <input
-            className={styles.input}
-            type="text"
-            name="lastName"
-            id="lastName"
-            value={userInformation.lastName}
-            onChange={handleChange}
-          />
-        </div>
-        <div className={styles.labelInputContainer}>
-          <label htmlFor="email">E-mail</label>
-          <input
-            className={styles.input}
-            type="email"
-            name="email"
-            id="email"
-            value={userInformation.email}
-            onChange={handleChange}
-          />
-        </div>
+      <form className={styles.form} onSubmit={handleSubmit} noValidate>
+        {inputs}
         <button className={styles.button} type="submit">
           Submit
         </button>
