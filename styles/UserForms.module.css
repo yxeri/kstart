@@ -1,0 +1,40 @@
+.container{
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.labelInputContainer{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.input{
+    padding: 10px;
+    border-radius: 10px;
+    background-color: gray;
+}
+
+.button{
+    width: 150px;
+    padding: 10px;
+    background-color:#1183ca;
+    color: rgb(25, 25, 25);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.componentContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

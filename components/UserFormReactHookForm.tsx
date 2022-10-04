@@ -3,6 +3,7 @@ import { IUserInformation } from "../models/userInformation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import { userListState } from "../atoms/atoms";
+import styles from "../styles/UserForms.module.css";
 
 const UserFormReactHookForm = () => {
   const {
@@ -11,7 +12,9 @@ const UserFormReactHookForm = () => {
     reset,
     formState: { isSubmitSuccessful },
   } = useForm<IUserInformation>();
+
   const setUserList = useSetRecoilState(userListState);
+
   const onSubmit: SubmitHandler<IUserInformation> = (user) => {
     setUserList((current) => [
       ...current,
@@ -26,17 +29,34 @@ const UserFormReactHookForm = () => {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="firstName"> First Name</label>
-        <input {...register("firstName", { required: true, minLength: 2 })} />
-        <label htmlFor="lastName">Last Name</label>
-        <input {...register("lastName", { required: true, minLength: 2 })} />
-        <label htmlFor="email">Email</label>
-        <input {...register("email", { required: true })} />
-        <button type="submit">Submit</button>
+    <div className={styles.container}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.labelInputContainer}>
+          <label htmlFor="firstName"> First Name</label>
+          <input
+            className={styles.input}
+            {...register("firstName", { required: true, minLength: 2 })}
+          />
+        </div>
+        <div className={styles.labelInputContainer}>
+          <label htmlFor="lastName">Last Name</label>
+          <input
+            className={styles.input}
+            {...register("lastName", { required: true, minLength: 2 })}
+          />
+        </div>
+        <div className={styles.labelInputContainer}>
+          <label htmlFor="email">Email</label>
+          <input
+            className={styles.input}
+            {...register("email", { required: true })}
+          />
+        </div>
+        <button className={styles.button} type="submit">
+          Submit
+        </button>
       </form>
-    </>
+    </div>
   );
 };
 export default UserFormReactHookForm;

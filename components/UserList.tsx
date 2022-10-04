@@ -1,6 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { userListState } from "../atoms/atoms";
 import { User } from "./User";
+import styles from "../styles/UserList.module.css";
 
 export const UserList = () => {
   const userList = useRecoilValue(userListState);
@@ -9,5 +10,5 @@ export const UserList = () => {
     return <User user={user} key={i} />;
   });
 
-  return <div>{usersToComponent}</div>;
+  return <div className={styles.container}>{usersToComponent}</div>;
 };
