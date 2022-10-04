@@ -1,9 +1,8 @@
-import { NextPage } from "next";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { User } from "./User";
 import { IUserInformation } from "../models/userInformation";
 
-const UserForm: NextPage = () => {
+const UserForm = () => {
   const [userInformation, setUserInformation] = useState<IUserInformation>({
     firstName: "",
     lastName: "",

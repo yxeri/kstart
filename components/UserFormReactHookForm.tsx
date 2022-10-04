@@ -1,10 +1,9 @@
-import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { IUserInformation } from "../models/userInformation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { User } from "./User";
 
-const UserFormReactHookForm: NextPage = () => {
+const UserFormReactHookForm = () => {
   const {
     register,
     handleSubmit,
