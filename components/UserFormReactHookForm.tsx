@@ -1,41 +1,34 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { PersonInformation } from "../models/PersonInformation";
+import { IUserInformation } from "../models/userInformation";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Person } from "../components/Person";
+import { User } from "./User";
 
-interface IFormInput {
-  firstName: string;
-  lastName: string;
-}
-
-const FormReactHookForm: NextPage = () => {
+const UserFormReactHookForm: NextPage = () => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful },
-  } = useForm<IFormInput>();
+  } = useForm<IUserInformation>();
 
-  const [personList, setPersonList] = useState<PersonInformation[]>([]);
+  const [users, setPersonList] = useState<IUserInformation[]>([]);
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IUserInformation> = (data) => {
     setPersonList((current) => [
       ...current,
-      new PersonInformation(data.firstName, data.lastName),
+      { firstName: data.firstName, lastName: data.lastName, email: data.email },
     ]);
   };
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset({ firstName: "", lastName: "" });
+      reset({ firstName: "", lastName: "", email: "" });
     }
   }, [isSubmitSuccessful, reset]);
 
-  console.log("personList", personList);
-
-  const persons = personList.map((person, i) => {
-    return <Person person={person} key={i} />;
+  const usersToComponent = users.map((user, i) => {
+    return <User user={user} key={i} />;
   });
 
   return (
@@ -45,10 +38,12 @@ const FormReactHookForm: NextPage = () => {
         <input {...register("firstName", { required: true, minLength: 2 })} />
         <label htmlFor="lastName">Last Name</label>
         <input {...register("lastName", { required: true, minLength: 2 })} />
+        <label htmlFor="email">Email</label>
+        <input {...register("email", { required: true })} />
         <button type="submit">Submit</button>
       </form>
-      {persons}
+      {usersToComponent}
     </>
   );
 };
-export default FormReactHookForm;
+export default UserFormReactHookForm;
