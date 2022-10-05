@@ -11,7 +11,9 @@ const UserFormReactHookForm = () => {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, errors },
-  } = useForm<IUserInformation>();
+  } = useForm<IUserInformation>({
+    mode: "onBlur",
+  });
 
   const setUserList = useSetRecoilState(userListState);
 
@@ -76,4 +78,5 @@ const UserFormReactHookForm = () => {
     </div>
   );
 };
+
 export default UserFormReactHookForm;
