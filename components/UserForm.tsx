@@ -1,7 +1,8 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, FocusEvent } from "react";
 import { User } from "./User";
 import { IUserInformation } from "../models/userInformation";
 import styles from "../styles/UserForms.module.css";
+import { validateForm } from "../validation/validateUserForm";
 
 const UserForm = () => {
   const [userInformation, setUserInformation] = useState<IUserInformation>({
@@ -11,12 +12,22 @@ const UserForm = () => {
   });
 
   const [userList, setUserList] = useState<IUserInformation[]>([]);
+  const [validationMessage, setValidationMessage] = useState({
+    message: "",
+    type: "",
+    isActive: false,
+  });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserInformation({
       ...userInformation,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleOnBlur = (event: FocusEvent<HTMLInputElement, Element>) => {
+    let validationMessage = validateForm(event.target.value, event.target.id);
+    setValidationMessage(validationMessage);
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -39,7 +50,7 @@ const UserForm = () => {
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.labelInputContainer}>
-          <label htmlFor="firstName"> First Name</label>
+          <label htmlFor="firstName">First Name</label>
           <input
             className={styles.input}
             type="text"
@@ -47,7 +58,12 @@ const UserForm = () => {
             id="firstName"
             value={userInformation.firstName}
             onChange={handleChange}
+            onBlur={handleOnBlur}
           />
+          {validationMessage.type === "firstName" &&
+            validationMessage.isActive && (
+              <p className={styles.error}>{validationMessage.message}</p>
+            )}
         </div>
         <div className={styles.labelInputContainer}>
           <label htmlFor="lastName">Last Name</label>
@@ -58,7 +74,12 @@ const UserForm = () => {
             id="lastName"
             value={userInformation.lastName}
             onChange={handleChange}
+            onBlur={handleOnBlur}
           />
+          {validationMessage.type === "lastName" &&
+            validationMessage.isActive && (
+              <p className={styles.error}>{validationMessage.message}</p>
+            )}
         </div>
         <div className={styles.labelInputContainer}>
           <label htmlFor="email">E-mail</label>
@@ -69,8 +90,12 @@ const UserForm = () => {
             id="email"
             value={userInformation.email}
             onChange={handleChange}
+            onBlur={handleOnBlur}
           />
         </div>
+        {validationMessage.type === "email" && validationMessage.isActive && (
+          <p className={styles.error}>{validationMessage.message}</p>
+        )}
         <button className={styles.button} type="submit">
           Submit
         </button>
