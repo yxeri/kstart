@@ -17,6 +17,11 @@ const UserForm = () => {
   });
 
   const [userList, setUserList] = useState<IUserInformation[]>([]);
+  const [validationMessage, setValidationMessage] = useState({
+    message: "",
+    type: "",
+    isActive: false,
+  });
 
   const [validation, setValidation] = useState<Map<string, IValidation>>(
     new Map()
@@ -30,6 +35,11 @@ const UserForm = () => {
       ...userInformation,
       [name]: value,
     });
+  };
+
+  const handleOnBlur = (event: FocusEvent<HTMLInputElement, Element>) => {
+    let validationMessage = validateForm(event.target.value, event.target.id);
+    setValidationMessage(validationMessage);
   };
 
   const handleSubmit = (e: FormEvent) => {
