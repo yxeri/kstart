@@ -1,23 +1,27 @@
-export const validateForm = (value: string, targetId: string) => {
-  if (targetId === "firstName") {
+import { IValidation } from "../models/validationModel";
+
+export const validateForm = <IValidation>(value: string, id: string) => {
+  if (id === "firstName") {
     if (value.length < 3) {
       return {
         message: "First name longer than two characters is required",
-        type: targetId,
+        id: id,
         isActive: true,
+        isDirty: true,
       };
     } else {
-      return { message: "", type: targetId, isActive: false };
+      return { message: "", id: id, isActive: false, isDirty: false };
     }
-  } else if (targetId === "lastName") {
+  } else if (id === "lastName") {
     if (value.length < 3) {
       return {
         message: "Last name longer than two characters is required",
-        type: targetId,
+        id: id,
         isActive: true,
+        isDirty: true,
       };
     } else {
-      return { message: "", type: targetId, isActive: false };
+      return { message: "", id: id, isActive: false, isDirty: false };
     }
   } else {
     if (
@@ -27,11 +31,12 @@ export const validateForm = (value: string, targetId: string) => {
     ) {
       return {
         message: "Please enter a valid email adress",
-        type: targetId,
+        id: id,
         isActive: true,
+        isDirty: true,
       };
     } else {
-      return { message: "", type: targetId, isActive: false };
+      return { message: "", id: id, isActive: false, isDirty: false };
     }
   }
 };
