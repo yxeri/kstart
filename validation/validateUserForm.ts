@@ -2,7 +2,7 @@ import { IValidation } from "../models/validationModel";
 
 export const validateForm = <IValidation>(value: string, id: string) => {
   if (id === "firstName") {
-    if (value.length < 3) {
+    if (value.length <= 2) {
       return {
         message: "First name longer than two characters is required",
         id: id,
@@ -10,10 +10,10 @@ export const validateForm = <IValidation>(value: string, id: string) => {
         isDirty: true,
       };
     } else {
-      return { message: "", id: id, isActive: false, isDirty: false };
+      return { message: "", id: id, isActive: false, isDirty: true };
     }
   } else if (id === "lastName") {
-    if (value.length < 3) {
+    if (value.length <= 2) {
       return {
         message: "Last name longer than two characters is required",
         id: id,
@@ -21,7 +21,7 @@ export const validateForm = <IValidation>(value: string, id: string) => {
         isDirty: true,
       };
     } else {
-      return { message: "", id: id, isActive: false, isDirty: false };
+      return { message: "", id: id, isActive: false, isDirty: true };
     }
   } else {
     if (
@@ -36,7 +36,7 @@ export const validateForm = <IValidation>(value: string, id: string) => {
         isDirty: true,
       };
     } else {
-      return { message: "", id: id, isActive: false, isDirty: false };
+      return { message: "", id: id, isActive: false, isDirty: true };
     }
   }
 };

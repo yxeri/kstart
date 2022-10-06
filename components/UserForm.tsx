@@ -5,6 +5,8 @@ import styles from "../styles/UserForms.module.css";
 import { validateForm } from "../validation/validateUserForm";
 import { IValidation } from "../models/validationModel";
 
+type fields = "firstName" | "lastName" | "email";
+
 const UserForm = () => {
   const [userInformation, setUserInformation] = useState<IUserInformation>({
     firstName: "",
@@ -18,72 +20,47 @@ const UserForm = () => {
     new Map()
   );
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserInformation({
-      ...userInformation,
-      [e.target.name]: e.target.value,
-    });
-
-    //------- Handle Validation OnChange --------// //------WORKS!!!-----///
-
-    let validationInformation: IValidation = validateForm(
-      e.target.value,
-      e.target.id
-    );
-
-    if (validation.has(validationInformation.id)) {
-      setValidation(
-        (map) =>
-          new Map(map.set(validationInformation.id, validationInformation))
-      );
-    } else {
-      const validate = validation.set(
-        validationInformation.id,
-        validationInformation
-      );
-      setValidation(validate);
-    }
-  };
-
-  const handleOnBlur = (event: FocusEvent<HTMLInputElement, Element>) => {
-    let validationInformation: IValidation = validateForm(
-      event.target.value,
-      event.target.id
-    );
-
-    if (validation.has(validationInformation.id)) {
-      setValidation(
-        (map) =>
-          new Map(map.set(validationInformation.id, validationInformation))
-      );
-    } else {
-      const validate = validation.set(
-        validationInformation.id,
-        validationInformation
-      );
-      setValidation(validate);
-    }
-  };
-
   const validateFirstName = validation.get("firstName");
   const validateLastName = validation.get("lastName");
   const validateEmail = validation.get("email");
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, id } = e.target;
+    setUserInformation({
+      ...userInformation,
+      [name]: value,
+    });
+  };
+
+  const handleOnBlur = (e: FocusEvent<HTMLInputElement, Element>) => {
+    const { value, id } = e.target;
+    const updateValidation = new Map(validation);
+    const validationInformation: IValidation = validateForm(value, id);
+    updateValidation.set(id, validationInformation);
+
+    setValidation(updateValidation);
+  };
+
+  const validateForms: fields[] = ["firstName", "lastName", "email"];
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (
-      validateFirstName &&
-      !validateFirstName.isActive &&
-      validateLastName &&
-      !validateLastName.isActive &&
-      validateEmail &&
-      !validateEmail.isActive &&
-      userInformation.firstName !== "" &&
-      userInformation.lastName !== "" &&
-      userInformation.email !== ""
-    ) {
+    const updateValidation = new Map(validation);
+    validateForms.forEach((id) => {
+      const validationInformation: IValidation = validateForm(
+        userInformation[id],
+        id
+      );
+      updateValidation.set(validationInformation.id, validationInformation);
+    });
+    setValidation(updateValidation);
+
+    const validationObjects = Array.from(updateValidation.values());
+
+    if (validationObjects.every((values) => values.isActive === false)) {
       setUserList((current) => [...current, userInformation]);
       setUserInformation({ firstName: "", lastName: "", email: "" });
+      setValidation(new Map());
     }
   };
 
@@ -93,7 +70,7 @@ const UserForm = () => {
 
   return (
     <div className={styles.container}>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.labelInputContainer}>
           <label htmlFor="firstName">First Name</label>
           <input
@@ -105,7 +82,7 @@ const UserForm = () => {
             onChange={handleChange}
             onBlur={handleOnBlur}
           />
-          {validateFirstName && validateFirstName.isActive && (
+          {validateFirstName?.isActive && (
             <p className={styles.error}>{validateFirstName?.message}</p>
           )}
         </div>
@@ -120,7 +97,7 @@ const UserForm = () => {
             onChange={handleChange}
             onBlur={handleOnBlur}
           />
-          {validateLastName && validateLastName.isActive && (
+          {validateLastName?.isActive && (
             <p className={styles.error}>{validateLastName?.message}</p>
           )}
         </div>
@@ -135,10 +112,11 @@ const UserForm = () => {
             onChange={handleChange}
             onBlur={handleOnBlur}
           />
+          {validateEmail?.isActive && (
+            <p className={styles.error}>{validateEmail?.message}</p>
+          )}
         </div>
-        {validateEmail && validateEmail.isActive && (
-          <p className={styles.error}>{validateEmail?.message}</p>
-        )}
+
         <button className={styles.button} type="submit">
           Submit
         </button>
