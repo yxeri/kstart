@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState, FocusEvent } from "react";
+import { ChangeEvent, FormEvent, useState, FocusEvent, useEffect } from "react";
 import { User } from "./User";
 import { IUserInformation } from "../models/userInformation";
 import styles from "../styles/UserForms.module.css";
@@ -17,11 +17,10 @@ const UserForm = () => {
   });
 
   const [userList, setUserList] = useState<IUserInformation[]>([]);
-  const [validationMessage, setValidationMessage] = useState({
-    message: "",
-    type: "",
-    isActive: false,
-  });
+
+  const [validation, setValidation] = useState<Map<string, IValidation>>(
+    new Map()
+  );
 
   const [validation, setValidation] = useState<Map<string, IValidation>>(
     new Map()
@@ -35,12 +34,51 @@ const UserForm = () => {
       ...userInformation,
       [name]: value,
     });
+
+    //------- Handle Validation OnChange --------// //------WORKS!!!-----///
+
+    let validationInformation: IValidation = validateForm(
+      e.target.value,
+      e.target.id
+    );
+
+    if (validation.has(validationInformation.id)) {
+      setValidation(
+        (map) =>
+          new Map(map.set(validationInformation.id, validationInformation))
+      );
+    } else {
+      const validate = validation.set(
+        validationInformation.id,
+        validationInformation
+      );
+      setValidation(validate);
+    }
   };
 
   const handleOnBlur = (event: FocusEvent<HTMLInputElement, Element>) => {
-    let validationMessage = validateForm(event.target.value, event.target.id);
-    setValidationMessage(validationMessage);
+    let validationInformation: IValidation = validateForm(
+      event.target.value,
+      event.target.id
+    );
+
+    if (validation.has(validationInformation.id)) {
+      setValidation(
+        (map) =>
+          new Map(map.set(validationInformation.id, validationInformation))
+      );
+    } else {
+      const validate = validation.set(
+        validationInformation.id,
+        validationInformation
+      );
+      setValidation(validate);
+    }
   };
+
+  const validateFirstName = validation.get("firstName");
+  const validateLastName = validation.get("lastName");
+  const validateEmail = validation.get("email");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
