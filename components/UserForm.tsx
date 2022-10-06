@@ -9,6 +9,8 @@ import { Input } from "./Input";
 
 type fields = "firstName" | "lastName" | "email";
 
+type fields = "firstName" | "lastName" | "email";
+
 const UserForm = () => {
   const [userInformation, setUserInformation] = useState<IUserInformation>({
     firstName: "",
@@ -80,9 +82,27 @@ const UserForm = () => {
   const validateLastName = validation.get("lastName");
   const validateEmail = validation.get("email");
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, id } = e.target;
+    setUserInformation({
+      ...userInformation,
+      [name]: value,
+    });
+  };
+
+  const handleOnBlur = (e: FocusEvent<HTMLInputElement, Element>) => {
+    const { value, id } = e.target;
+    const updateValidation = new Map(validation);
+    const validationInformation: IValidation = validateForm(value, id);
+    updateValidation.set(id, validationInformation);
+
+    setValidation(updateValidation);
+  };
+
+  const validateForms: fields[] = ["firstName", "lastName", "email"];
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
     const updateValidation = new Map(validation);
     validateForms.forEach((id) => {
       const validationInformation: IValidation = validateForm(
