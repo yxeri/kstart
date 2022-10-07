@@ -86,6 +86,7 @@ const UserForm = () => {
             <p className={styles.error}>{validateFirstName?.message}</p>
           )}
         </div>
+
         <div className={styles.labelInputContainer}>
           <label htmlFor="lastName">Last Name</label>
           <input
@@ -101,6 +102,7 @@ const UserForm = () => {
             <p className={styles.error}>{validateLastName?.message}</p>
           )}
         </div>
+
         <div className={styles.labelInputContainer}>
           <label htmlFor="email">E-mail</label>
           <input
