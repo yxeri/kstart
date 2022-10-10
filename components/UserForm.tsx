@@ -13,9 +13,9 @@ type fields = "firstName" | "lastName" | "email";
 
 const UserForm = () => {
   const [userInformation, setUserInformation] = useState<IUserInformation>({
-    firstName: { id: "firstName", value: "" },
-    lastName: { id: "lastName", value: "" },
-    email: { id: "email", value: "" },
+    firstName: "",
+    lastName: "",
+    email: "",
   });
 
   const [userList, setUserList] = useState<IUserInformation[]>([]);
@@ -88,27 +88,17 @@ const UserForm = () => {
       ...userInformation,
       [name]: value,
     });
-  }; */
-
-  const handleInputChange = (value: string, id: string) => {};
-
-  /*   const handleOnBlur = (e: FocusEvent<HTMLInputElement, Element>) => {
-    const { value, id } = e.target;
-    const updateValidation = new Map(validation);
-    const validationInformation: IValidation = validateForm(value, id);
-    updateValidation.set(id, validationInformation);
-
-    setValidation(updateValidation);
-  }; */
+  };
 
   const validateForms: fields[] = ["firstName", "lastName", "email"];
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
     const updateValidation = new Map(validation);
     validateForms.forEach((id) => {
       const validationInformation: IValidation = validateForm(
-        userInformation[id].id,
+        userInformation[id],
         id
       );
       updateValidation.set(validationInformation.id, validationInformation);
