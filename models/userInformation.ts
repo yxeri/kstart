@@ -1,5 +1,5 @@
 export interface IUserInformation {
-  firstName: string;
-  lastName: string;
-  email: string;
+  firstName: { id: string; value: string };
+  lastName: { id: string; value: string };
+  email: { id: string; value: string };
 }

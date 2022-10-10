@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState, FocusEvent, useEffect } from "react";
+import { ChangeEvent, FormEvent, useState, FocusEvent } from "react";
 import { User } from "./User";
 import { IUserInformation } from "../models/userInformation";
 import styles from "../styles/UserForms.module.css";
@@ -13,9 +13,9 @@ type fields = "firstName" | "lastName" | "email";
 
 const UserForm = () => {
   const [userInformation, setUserInformation] = useState<IUserInformation>({
-    firstName: "",
-    lastName: "",
-    email: "",
+    firstName: { id: "firstName", value: "" },
+    lastName: { id: "lastName", value: "" },
+    email: { id: "email", value: "" },
   });
 
   const [userList, setUserList] = useState<IUserInformation[]>([]);
@@ -82,22 +82,24 @@ const UserForm = () => {
   const validateLastName = validation.get("lastName");
   const validateEmail = validation.get("email");
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, id } = e.target;
+  /* const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setUserInformation({
       ...userInformation,
       [name]: value,
     });
-  };
+  }; */
 
-  const handleOnBlur = (e: FocusEvent<HTMLInputElement, Element>) => {
+  const handleInputChange = (value: string, id: string) => {};
+
+  /*   const handleOnBlur = (e: FocusEvent<HTMLInputElement, Element>) => {
     const { value, id } = e.target;
     const updateValidation = new Map(validation);
     const validationInformation: IValidation = validateForm(value, id);
     updateValidation.set(id, validationInformation);
 
     setValidation(updateValidation);
-  };
+  }; */
 
   const validateForms: fields[] = ["firstName", "lastName", "email"];
 
@@ -106,7 +108,7 @@ const UserForm = () => {
     const updateValidation = new Map(validation);
     validateForms.forEach((id) => {
       const validationInformation: IValidation = validateForm(
-        userInformation[id],
+        userInformation[id].id,
         id
       );
       updateValidation.set(validationInformation.id, validationInformation);
