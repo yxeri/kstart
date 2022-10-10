@@ -1,17 +1,19 @@
-import { ChangeEvent, FormEvent, useState, FocusEvent, useEffect } from "react";
+import { ChangeEvent, FormEvent, useState, FocusEvent } from "react";
 import { User } from "./User";
 import { IUserInformation } from "../models/userInformation";
 import styles from "../styles/UserForms.module.css";
 import { validateForm } from "../validation/validateUserForm";
 import { IValidation } from "../models/validationModel";
+import { formData } from "../formData/formData";
+import { Input } from "./Input";
 
 type fields = "firstName" | "lastName" | "email";
 
 const UserForm = () => {
   const [userInformation, setUserInformation] = useState<IUserInformation>({
-    firstName: "",
-    lastName: "",
-    email: "",
+    firstName: { id: "firstName", value: "" },
+    lastName: { id: "lastName", value: "" },
+    email: { id: "email", value: "" },
   });
 
   const [userList, setUserList] = useState<IUserInformation[]>([]);
@@ -20,26 +22,26 @@ const UserForm = () => {
     new Map()
   );
 
-  const validateFirstName = validation.get("firstName");
-  const validateLastName = validation.get("lastName");
-  const validateEmail = validation.get("email");
+  const validationToInputComponent = Array.from(validation.values());
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, id } = e.target;
+  /* const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setUserInformation({
       ...userInformation,
       [name]: value,
     });
-  };
+  }; */
 
-  const handleOnBlur = (e: FocusEvent<HTMLInputElement, Element>) => {
+  const handleInputChange = (value: string, id: string) => {};
+
+  /*   const handleOnBlur = (e: FocusEvent<HTMLInputElement, Element>) => {
     const { value, id } = e.target;
     const updateValidation = new Map(validation);
     const validationInformation: IValidation = validateForm(value, id);
     updateValidation.set(id, validationInformation);
 
     setValidation(updateValidation);
-  };
+  }; */
 
   const validateForms: fields[] = ["firstName", "lastName", "email"];
 
@@ -48,7 +50,7 @@ const UserForm = () => {
     const updateValidation = new Map(validation);
     validateForms.forEach((id) => {
       const validationInformation: IValidation = validateForm(
-        userInformation[id],
+        userInformation[id].id,
         id
       );
       updateValidation.set(validationInformation.id, validationInformation);
@@ -59,20 +61,40 @@ const UserForm = () => {
 
     if (validationObjects.every((values) => values.isActive === false)) {
       setUserList((current) => [...current, userInformation]);
-      setUserInformation({ firstName: "", lastName: "", email: "" });
+      setUserInformation({
+        firstName: { id: "firstName", value: "" },
+        lastName: { id: "lastName", value: "" },
+        email: { id: "email", value: "" },
+      });
       setValidation(new Map());
     }
   };
+
+  console.log("validation: ", validation);
+  console.log("validationToInputComponent", validationToInputComponent);
 
   const usersToComponent = userList.map((user, j) => {
     return <User user={user} key={j} />;
   });
 
+  const inputs = formData.map((inputInformation) => {
+    return (
+      <Input
+        key={inputInformation.id}
+        inputInformation={inputInformation}
+        //handleOnBlur={handleOnBlur}
+        handleInputChange={handleInputChange}
+        errorMessage={validation.get(inputInformation.id)}
+      ></Input>
+    );
+  });
+
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
+        {inputs}
         <div className={styles.labelInputContainer}>
-          <label htmlFor="firstName">First Name</label>
+          {/* <label htmlFor="firstName">First Name</label>
           <input
             className={styles.input}
             type="text"
@@ -116,7 +138,7 @@ const UserForm = () => {
           />
           {validateEmail?.isActive && (
             <p className={styles.error}>{validateEmail?.message}</p>
-          )}
+          )} */}
         </div>
 
         <button className={styles.button} type="submit">

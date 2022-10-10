@@ -9,9 +9,8 @@ export const validateForm = <IValidation>(value: string, id: string) => {
         isActive: true,
         isDirty: true,
       };
-    } else {
-      return { message: "", id: id, isActive: false, isDirty: true };
     }
+    return { message: "", id: id, isActive: false, isDirty: true };
   } else if (id === "lastName") {
     if (value.length <= 2) {
       return {
@@ -20,9 +19,8 @@ export const validateForm = <IValidation>(value: string, id: string) => {
         isActive: true,
         isDirty: true,
       };
-    } else {
-      return { message: "", id: id, isActive: false, isDirty: true };
     }
+    return { message: "", id: id, isActive: false, isDirty: true };
   } else {
     if (
       !new RegExp(
@@ -35,8 +33,7 @@ export const validateForm = <IValidation>(value: string, id: string) => {
         isActive: true,
         isDirty: true,
       };
-    } else {
-      return { message: "", id: id, isActive: false, isDirty: true };
     }
+    return { message: "", id: id, isActive: false, isDirty: true };
   }
 };
