@@ -1,39 +1,53 @@
-import { ChangeEvent, FocusEvent, useEffect, useState } from "react";
+import { ChangeEvent, FocusEvent } from "react";
 import { IInputInformationModel } from "../models/inputInformationModel";
 import { IUserInformation } from "../models/userInformation";
 import { IValidation } from "../models/validationModel";
 import styles from "../styles/UserForms.module.css";
+import { validateEmail, validateName } from "../validation/validateUserForm";
+
+type fields = "firstName" | "lastName" | "email";
 
 interface IInputProps {
   inputInformation: IInputInformationModel;
-  //handleOnBlur(e: FocusEvent<HTMLInputElement, Element>): void;
-  handleInputChange(value: string, id: string): void;
-  errorMessage: IValidation | undefined;
+  handleChange(event: ChangeEvent<HTMLInputElement>): void;
+  handleValidation(updateValidation: Map<string, IValidation>): void;
+  validation: Map<string, IValidation>;
+  userInformation: IUserInformation;
 }
 
 export const Input = ({
   inputInformation,
-  //handleOnBlur,
-  handleInputChange,
-  errorMessage,
+  handleChange,
+  handleValidation,
+  validation,
+  userInformation,
 }: IInputProps) => {
-  const [value, setValue] = useState("");
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+  const validationObject = validation.get(inputInformation.id);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    handleChange(e);
   };
-
-  useEffect(() => {
-    if (value) {
-      handleInputChange(value, inputInformation.id);
-    }
-  }, [value, handleInputChange, inputInformation.id]);
 
   const handleOnBlur = (e: FocusEvent<HTMLInputElement, Element>) => {
     const { value, id } = e.target;
-    if (id === "firstName" || "lastName") {
+    const updateValidation = new Map(validation);
+    if (id === "email") {
+      const validationInformation: IValidation = validateEmail(value, id);
+      updateValidation.set(id, validationInformation);
+      handleValidation(updateValidation);
+    } else {
+      const validationInformation: IValidation = validateName(value, id);
+      updateValidation.set(id, validationInformation);
+      handleValidation(updateValidation);
     }
   };
+
+  let value = userInformation.firstName;
+  if (inputInformation.id === "lastName") {
+    value = userInformation.lastName;
+  }
+  if (inputInformation.id === "email") {
+    value = userInformation.email;
+  }
 
   return (
     <div className={styles.labelInputContainer}>
@@ -43,12 +57,12 @@ export const Input = ({
         type={inputInformation.type}
         name={inputInformation.id}
         id={inputInformation.id}
-        value={value}
-        onChange={handleChange}
+        onChange={handleInputChange}
         onBlur={handleOnBlur}
+        value={value}
       />
-      {errorMessage?.isActive && (
-        <p className={styles.error}>{errorMessage?.message}</p>
+      {validationObject?.isActive && (
+        <p className={styles.error}>{validationObject?.message}</p>
       )}
     </div>
   );

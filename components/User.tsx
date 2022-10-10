@@ -9,9 +9,9 @@ export const User = ({ user }: IUser) => {
   return (
     <div className={styles.container}>
       <h3>
-        Name: {user.firstName.value} {user.lastName.value}
+        Name: {user.firstName} {user.lastName}
       </h3>
-      <p> E-mail: {user.email.value}</p>
+      <p> E-mail: {user.email}</p>
     </div>
   );
 };
