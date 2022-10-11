@@ -9,10 +9,10 @@ type fields = "firstName" | "lastName" | "email";
 
 interface IInputProps {
   inputInformation: IInputInformationModel;
-  handleChange(event: ChangeEvent<HTMLInputElement>): void;
-  handleValidation(updateValidation: Map<string, IValidation>): void;
   validation: Map<string, IValidation>;
   userInformation: IUserInformation;
+  handleChange(event: ChangeEvent<HTMLInputElement>): void;
+  handleValidation(updateValidation: Map<string, IValidation>): void;
 }
 
 export const Input = ({

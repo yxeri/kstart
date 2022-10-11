@@ -27,9 +27,9 @@ const UserFormReactHookForm = () => {
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
-        firstName: { id: "firstName", value: "" },
-        lastName: { id: "lastName", value: "" },
-        email: { id: "email", value: "" },
+        firstName: "",
+        lastName: "",
+        email: "",
       });
     }
   }, [isSubmitSuccessful, reset]);
