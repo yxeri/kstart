@@ -90,8 +90,6 @@ const UserForm = () => {
     });
   };
 
-  const validateForms: fields[] = ["firstName", "lastName", "email"];
-
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
