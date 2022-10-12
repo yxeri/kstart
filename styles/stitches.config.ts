@@ -10,12 +10,6 @@ export const {
   createTheme,
   config,
 } = createStitches({
-  theme: {
-    colors: {
-      gray400: "",
-      gray500: "",
-    },
-  },
   media: {
     bp1: "(min-width: 688px)",
     bp2: "(min-width: 992px)",
