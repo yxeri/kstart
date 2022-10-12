@@ -1,11 +1,7 @@
 import { NextPage } from "next";
-import { ColumnsNoStitches } from "../components/columnsNoStitches";
+import styles from "../styles/NoStitches.module.css";
 const NoStitches: NextPage = () => {
-  return (
-    <>
-      <ColumnsNoStitches />
-    </>
-  );
+  return <div className={styles.pageContainer}></div>;
 };
 
 export default NoStitches;
