@@ -1,7 +1,6 @@
-import { useEffect } from "react";
-import { useForm, useFormContext } from "react-hook-form";
-import { IUserInformation } from "../models/userInformation";
+import { useFormContext } from "react-hook-form";
 import styles from "../styles/UserForms.module.css";
+
 interface IFormField {
   field: {
     id: string;
@@ -18,16 +17,8 @@ interface IFormField {
 export const FormField = ({ field }: IFormField) => {
   const {
     register,
-    setError,
     formState: { errors },
   } = useFormContext();
-
-  /*   useEffect(() => {
-    setError(field.id, {
-      type: "manual",
-      message: field.errorMessage,
-    });
-  }, [setError, field.id, field.errorMessage]); */
 
   console.log("errors", errors, errors[field.id]);
 
@@ -42,7 +33,6 @@ export const FormField = ({ field }: IFormField) => {
           required: field.rules.required,
         })}
       />
-      {/* <p>{errors[field.id] ? field.errorMessage : null}</p> */}
       {errors[field.id] && <p className={styles.error}>{field.errorMessage}</p>}
     </div>
   );
