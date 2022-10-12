@@ -1,15 +1,6 @@
 import * as Accordion from "@radix-ui/react-accordion";
-import { styled, keyframes } from "@stitches/react";
+import { styled } from "@stitches/react";
 export const MyAccordion = () => {
-  const open = keyframes({
-    from: { height: 0 },
-    to: { height: "var(--radix-accordion-content-height)" },
-  });
-
-  const close = keyframes({
-    from: { height: "var(--radix-accordion-content-height)" },
-    to: { height: 0 },
-  });
   const AccordionRoot = styled(Accordion.Root, {
     background:
       "linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(7,78,76,1) 100%)",
@@ -31,7 +22,7 @@ export const MyAccordion = () => {
   const AccordionTrigger = styled(Accordion.Trigger, {
     width: "220px",
     background: "transparent",
-    //border: "3px solid black",
+    border: "3px solid black",
     borderRadius: "30px",
   });
 
@@ -39,42 +30,38 @@ export const MyAccordion = () => {
     borderRadius: "30px",
   });
 
-  const AccordionContent = styled(Accordion.Content, {
-    overflow: "hidden",
-    '&[data-state="open"]': { animation: `${open} 300ms ease-in` },
-    '&[data-state="closed"]': { animation: `${close} 300ms ease-in` },
-  });
+  const AccordionContent = styled(Accordion.Content, {});
   return (
     <>
       <AccordionRoot type="single" collapsible defaultValue="item-1">
         <AccordionItem value="item-1">
           <AccordionHeader>
-            <AccordionTrigger css={{ border: "3px solid #041b32" }}>
+            <AccordionTrigger>
               <h2>Im Open!</h2>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
-            <p>Hello!</p>
+            <span>Hello!</span>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
           <AccordionHeader>
-            <AccordionTrigger css={{ border: "3px solid #052838" }}>
+            <AccordionTrigger>
               <h2>Click Me!</h2>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
-            <p>Hello Again!</p>
+            <span>Hello Again!</span>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
           <AccordionHeader>
-            <AccordionTrigger css={{ border: "3px solid #063c43" }}>
+            <AccordionTrigger>
               <h2>Click Me Too!</h2>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
-            <p>Party!</p>
+            <span>Party!</span>
           </AccordionContent>
         </AccordionItem>
       </AccordionRoot>
