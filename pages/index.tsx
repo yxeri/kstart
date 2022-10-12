@@ -11,6 +11,11 @@ const Home: NextPage = () => {
             <h2>Forms</h2>
           </div>
         </Link>
+        <Link href="/radix-accordion">
+          <div className={styles.card}>
+            <h2>Radix accordion</h2>
+          </div>
+        </Link>
       </div>
     </div>
   );
