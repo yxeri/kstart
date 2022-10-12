@@ -11,6 +11,11 @@ const Home: NextPage = () => {
             <h2>Forms</h2>
           </div>
         </Link>
+        <Link href="/NoStitches">
+          <div className={styles.card}>
+            <h2>NoStitches</h2>
+          </div>
+        </Link>
       </div>
     </div>
   );
