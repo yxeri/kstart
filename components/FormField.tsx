@@ -12,13 +12,24 @@ interface IFormField {
       minLength: number;
       pattern: RegExp;
     };
+    errorMessage: string;
   };
 }
 export const FormField = ({ field }: IFormField) => {
   const {
     register,
+    setError,
     formState: { errors },
   } = useFormContext();
+
+  /*   useEffect(() => {
+    setError(field.id, {
+      type: "manual",
+      message: field.errorMessage,
+    });
+  }, [setError, field.id, field.errorMessage]); */
+
+  console.log("errors", errors, errors[field.id]);
 
   return (
     <div className={styles.labelInputContainer}>
@@ -31,6 +42,8 @@ export const FormField = ({ field }: IFormField) => {
           required: field.rules.required,
         })}
       />
+      {/* <p>{errors[field.id] ? field.errorMessage : null}</p> */}
+      {errors[field.id] && <p className={styles.error}>{field.errorMessage}</p>}
     </div>
   );
 };
