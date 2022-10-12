@@ -6,9 +6,9 @@ import { Nav } from "../components/Nav";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-<<<<<<< HEAD
+
   return <div className={styles.container}></div>;
-=======
+
   return (
     <div className={styles.container}>
       <div className={styles.grid}>
@@ -17,6 +17,7 @@ const Home: NextPage = () => {
             <h2>Forms</h2>
           </div>
         </Link>
+
         <Link href="/NoStitches">
           <div className={styles.card}>
             <h2>NoStitches</h2>
@@ -27,6 +28,7 @@ const Home: NextPage = () => {
             <h2>Stitches</h2>
           </div>
         </Link>
+
         <Link href="/radix-accordion">
           <div className={styles.card}>
             <h2>Radix accordion</h2>
@@ -35,7 +37,7 @@ const Home: NextPage = () => {
       </div>
     </div>
   );
->>>>>>> 8a0fc89 (added Accordion)
+
 };
 
 export default Home;
