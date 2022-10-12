@@ -22,6 +22,8 @@ const UserForm = () => {
     new Map()
   );
 
+  const validateForms: fields[] = ["firstName", "lastName", "email"];
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInformation({
@@ -29,8 +31,6 @@ const UserForm = () => {
       [name]: value,
     });
   };
-
-  const validateForms: fields[] = ["firstName", "lastName", "email"];
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

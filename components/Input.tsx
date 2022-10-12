@@ -5,8 +5,6 @@ import { IValidation } from "../models/validationModel";
 import styles from "../styles/UserForms.module.css";
 import { validateEmail, validateName } from "../validation/validateUserForm";
 
-type fields = "firstName" | "lastName" | "email";
-
 interface IInputProps {
   inputInformation: IInputInformationModel;
   validation: Map<string, IValidation>;
