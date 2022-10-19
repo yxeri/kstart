@@ -1,7 +1,8 @@
+import { IUserInformation } from "../models/userInformation";
 import styles from "../styles/User.module.css";
 
 interface IUser {
-  user: { firstName: string; lastName: string; email: string };
+  user: IUserInformation;
 }
 
 export const User = ({ user }: IUser) => {
