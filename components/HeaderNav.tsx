@@ -6,16 +6,10 @@ import { Button } from "./stitches/Button";
 import { Header } from "./stitches/Header";
 
 export const HeaderNav = () => {
-  const breakPoints = { bp1: 688, bp2: 992, bp3: 1312 };
-  const [open, setOpen] = useState(false);
-  const [width, setWidth] = useState(0);
-
-  useEffect(() => {
-    setWidth(window.innerWidth);
-  }, []);
+  const [isOpen, setOpen] = useState(false);
 
   const handleClick = () => {
-    setOpen(!open);
+    setOpen(!isOpen);
   };
 
   return (
@@ -34,7 +28,7 @@ export const HeaderNav = () => {
           <HamburgerMenuIcon />
         </Button>
 
-        {(open || width > breakPoints.bp1) && <Nav />}
+        <Nav isOpen={isOpen} handleClick={handleClick} />
       </Header>
     </>
   );
