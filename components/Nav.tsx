@@ -5,42 +5,34 @@ import { StyledNavLink } from "./stitches/navigation/StyledNavLink";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { NavigationTrigger } from "./stitches/navigation/NavigationTrigger";
 import { NavigationItemDrop } from "./stitches/navigation/NavigationItemDrop";
-import { Box } from "./stitches/Box";
 
-export const Nav = () => {
+import { Button } from "./stitches/Button";
+
+import { StyledLink } from "./stitches/navigation/StyledLink";
+
+interface INavProps {
+  isOpen: boolean;
+  handleClick(): void;
+}
+
+export const Nav = ({ handleClick, isOpen }: INavProps) => {
   return (
     <>
       <NavigationRoot>
-        <NavigationList
-          css={{ display: "flex", alignItems: "center", gap: "30px" }}
-        >
+        <NavigationList mobile={isOpen}>
           <NavigationItem>
-            <Box
-              css={{
-                padding: "8px 12px",
-                background: "$krusoYellow",
-                color: "$krusoGreen",
-                border: "none",
-                boxShadow: "0 0 0 0.1",
-                borderRadius: "30px",
-                transition: "all 0.3s ease",
-                "&:hover": {
-                  background: "Wheat",
-                },
-              }}
-            >
+            <Button onClick={handleClick}>
               <StyledNavLink href="/">Home</StyledNavLink>
-            </Box>
+            </Button>
           </NavigationItem>
 
           <NavigationItemDrop>
-            <NavigationTrigger>Pages</NavigationTrigger>
+            <NavigationTrigger>Learning</NavigationTrigger>
             <NavigationMenu.Content>
               <NavigationList
                 css={{
                   position: "absolute",
-                  top: "0",
-                  left: "0",
+                  left: "80px",
                   borderRadius: "10px",
                   padding: "20px",
                   background: "$krusoYellow",
@@ -49,13 +41,19 @@ export const Nav = () => {
                   display: "flex",
                   flexDirection: "column",
                   gap: "10px",
+                  height: "auto",
+                  "@bp1": { top: "0", left: "0" },
                 }}
               >
                 <NavigationItem>
-                  <StyledNavLink href="/forms">Forms</StyledNavLink>
+                  <Button onClick={handleClick}>
+                    <StyledLink href="/forms">Forms</StyledLink>
+                  </Button>
                 </NavigationItem>
                 <NavigationItem>
-                  <StyledNavLink href="/forms">Forms</StyledNavLink>
+                  <Button onClick={handleClick}>
+                    <StyledLink href="/forms">Forms</StyledLink>
+                  </Button>
                 </NavigationItem>
               </NavigationList>
             </NavigationMenu.Content>

@@ -7,10 +7,12 @@ import {
   useRecoilState,
   useRecoilValue,
 } from "recoil";
+import { HeaderNav } from "../components/HeaderNav";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
+      <HeaderNav />
       <Component {...pageProps} />
     </RecoilRoot>
   );
