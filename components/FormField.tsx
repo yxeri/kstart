@@ -20,8 +20,6 @@ export const FormField = ({ field }: IFormField) => {
     formState: { errors },
   } = useFormContext();
 
-  console.log("errors", errors, errors[field.id]);
-
   return (
     <div className={styles.labelInputContainer}>
       <label htmlFor={field.id}>{field.label}</label>

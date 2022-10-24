@@ -12,6 +12,7 @@ import { StyledLink } from "./stitches/navigation/StyledLink";
 
 interface INavProps {
   isOpen: boolean;
+
   handleClick(): void;
 }
 
@@ -20,19 +21,16 @@ export const Nav = ({ handleClick, isOpen }: INavProps) => {
     <>
       <NavigationRoot>
         <NavigationList mobile={isOpen}>
-          <NavigationItem>
-            <Button onClick={handleClick}>
-              <StyledNavLink href="/">Home</StyledNavLink>
-            </Button>
+          <NavigationItem onClick={handleClick}>
+            <StyledLink href={"/"}>Home</StyledLink>
           </NavigationItem>
-
           <NavigationItemDrop>
             <NavigationTrigger>Learning</NavigationTrigger>
             <NavigationMenu.Content>
               <NavigationList
                 css={{
                   position: "absolute",
-                  left: "80px",
+                  //left: "80px",
                   borderRadius: "10px",
                   padding: "20px",
                   background: "$krusoYellow",
@@ -42,18 +40,23 @@ export const Nav = ({ handleClick, isOpen }: INavProps) => {
                   flexDirection: "column",
                   gap: "10px",
                   height: "auto",
+                  width: "200px",
                   "@bp1": { top: "0", left: "0" },
                 }}
               >
-                <NavigationItem>
-                  <Button onClick={handleClick}>
-                    <StyledLink href="/forms">Forms</StyledLink>
-                  </Button>
+                <NavigationItem onClick={handleClick}>
+                  <StyledLink href={"/forms"}>Forms</StyledLink>
                 </NavigationItem>
-                <NavigationItem>
-                  <Button onClick={handleClick}>
-                    <StyledLink href="/forms">Forms</StyledLink>
-                  </Button>
+                <NavigationItem onClick={handleClick}>
+                  <StyledLink href={"/NoStitches"}>No Stitches</StyledLink>
+                </NavigationItem>
+                <NavigationItem onClick={handleClick}>
+                  <StyledLink href={"/stitches"}>Stitches</StyledLink>
+                </NavigationItem>
+                <NavigationItem onClick={handleClick}>
+                  <StyledLink href={"/radix-accordion"}>
+                    Radix Accordion
+                  </StyledLink>
                 </NavigationItem>
               </NavigationList>
             </NavigationMenu.Content>

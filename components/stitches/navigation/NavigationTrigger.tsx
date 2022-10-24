@@ -2,16 +2,15 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { styled } from "../../../styles/stitches.config";
 
 export const NavigationTrigger = styled(NavigationMenu.Trigger, {
-  padding: "8px 12px",
-  background: "$krusoYellow",
-  color: "$krusoGreen",
+  color: "$krusoYellow",
+  fontSize: "1rem",
   border: "none",
-  boxShadow: "0 0 0 0.1",
-  borderRadius: "30px",
+  background: "$krusoGreen",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  padding: "0",
   "&:hover": {
-    background: "Wheat",
+    textDecoration: "underline",
   },
 });
