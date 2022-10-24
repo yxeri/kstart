@@ -10,4 +10,11 @@ export const Button = styled("button", {
   "&:hover": {
     background: "Wheat",
   },
+  variants: {
+    variant: {
+      active: {
+        fontWeight: "bold",
+      },
+    },
+  },
 });
