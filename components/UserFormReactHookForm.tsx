@@ -18,10 +18,6 @@ const UserFormReactHookForm = () => {
   const setUserList = useSetRecoilState(userListState);
 
   const onSubmit: SubmitHandler<FieldValues> = (user) => {
-    console.log("hello!");
-
-    console.log(user);
-
     setUserList((current) => [
       ...current,
       { firstName: user.firstName, lastName: user.lastName, email: user.email },
