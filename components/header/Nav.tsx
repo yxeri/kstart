@@ -1,14 +1,14 @@
-import { NavigationRoot } from "./stitches/navigation/NavigationRoot";
-import { NavigationList } from "./stitches/navigation/NavigationList";
-import { NavigationItem } from "./stitches/navigation/NavigationItem";
-import { StyledNavLink } from "./stitches/navigation/StyledNavLink";
+import { NavigationRoot } from "../styledComponents/navigation/NavigationRoot";
+import { NavigationList } from "../styledComponents/navigation/NavigationList";
+import { NavigationItem } from "../styledComponents/navigation/NavigationItem";
+import { StyledNavLink } from "../styledComponents/navigation/StyledNavLink";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { NavigationTrigger } from "./stitches/navigation/NavigationTrigger";
-import { NavigationItemDrop } from "./stitches/navigation/NavigationItemDrop";
+import { NavigationTrigger } from "../styledComponents/navigation/NavigationTrigger";
+import { NavigationItemDrop } from "../styledComponents/navigation/NavigationItemDrop";
 
-import { Button } from "./stitches/Button";
+import { Button } from "../styledComponents/Button";
 
-import { StyledLink } from "./stitches/navigation/StyledLink";
+import { StyledLink } from "../styledComponents/navigation/StyledLink";
 
 interface INavProps {
   isOpen: boolean;
@@ -30,7 +30,6 @@ export const Nav = ({ handleClick, isOpen }: INavProps) => {
               <NavigationList
                 css={{
                   position: "absolute",
-                  //left: "80px",
                   borderRadius: "10px",
                   padding: "20px",
                   background: "$krusoYellow",
@@ -40,7 +39,7 @@ export const Nav = ({ handleClick, isOpen }: INavProps) => {
                   flexDirection: "column",
                   gap: "10px",
                   height: "auto",
-                  width: "200px",
+                  width: "230px",
                   "@bp1": { top: "0", left: "0" },
                 }}
               >
@@ -48,10 +47,12 @@ export const Nav = ({ handleClick, isOpen }: INavProps) => {
                   <StyledLink href={"/forms"}>Forms</StyledLink>
                 </NavigationItem>
                 <NavigationItem onClick={handleClick}>
-                  <StyledLink href={"/NoStitches"}>No Stitches</StyledLink>
+                  <StyledLink href={"/columns"}>Columns</StyledLink>
                 </NavigationItem>
                 <NavigationItem onClick={handleClick}>
-                  <StyledLink href={"/stitches"}>Stitches</StyledLink>
+                  <StyledLink href={"/columnsWithStitches"}>
+                    Columns with stitches
+                  </StyledLink>
                 </NavigationItem>
                 <NavigationItem onClick={handleClick}>
                   <StyledLink href={"/radix-accordion"}>

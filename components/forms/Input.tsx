@@ -1,9 +1,9 @@
 import { ChangeEvent, FocusEvent } from "react";
-import { IInputInformationModel } from "../models/inputInformationModel";
-import { IUserInformation } from "../models/userInformation";
-import { IValidation } from "../models/validationModel";
-import styles from "../styles/UserForms.module.css";
-import { validateEmail, validateName } from "../validation/validateUserForm";
+import { IInputInformationModel } from "../../models/inputInformationModel";
+import { IUserInformation } from "../../models/userInformation";
+import { IValidation } from "../../models/validationModel";
+import styles from "../../styles/UserForms.module.css";
+import { validateEmail, validateName } from "../../validation/validateUserForm";
 
 interface IInputProps {
   inputInformation: IInputInformationModel;

@@ -1,9 +1,8 @@
-import { NextPage } from "next";
-import { Box } from "../components/stitches/Box";
-import { Heading } from "../components/stitches/Heading";
-import { Text } from "../components/stitches/Text";
+import { Box } from "../styledComponents/Box";
+import { Heading } from "../styledComponents/Heading";
+import { Text } from "../styledComponents/Text";
 
-const Stitches: NextPage = () => {
+export const ColumnsStitches = () => {
   return (
     <>
       <Box
@@ -104,5 +103,3 @@ const Stitches: NextPage = () => {
     </>
   );
 };
-
-export default Stitches;

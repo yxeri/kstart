@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import { HeaderNav } from "../components/HeaderNav";
-import { Nav } from "../components/Nav";
+import { HeaderNav } from "../components/header/HeaderNav";
+import { Nav } from "../components/header/Nav";
 
 import styles from "../styles/Home.module.css";
 
