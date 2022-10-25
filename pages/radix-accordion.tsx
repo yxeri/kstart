@@ -1,14 +1,21 @@
 import { NextPage } from "next";
 import { MyAccordion } from "../components/accordion/MyAccordion";
-import styles from "../styles/Forms.module.css";
+import { Box } from "../components/styledComponents/Box";
 
 const RadixAccordion: NextPage = () => {
   return (
-    <>
-      <div className={styles.wrapper}>
+    <div>
+      <Box
+        css={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          paddingTop: "60px",
+        }}
+      >
         <MyAccordion />
-      </div>
-    </>
+      </Box>
+    </div>
   );
 };
 

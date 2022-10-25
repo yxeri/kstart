@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Nav } from "./Nav";
-import { Box } from "../styledComponents/Box";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Button } from "../styledComponents/Button";
-import { Header } from "./Header";
+import { Header } from "../styledComponents/Header";
 
 export const HeaderNav = () => {
   const [isOpen, setOpen] = useState(false);

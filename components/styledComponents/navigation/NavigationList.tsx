@@ -1,5 +1,5 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { keyframes, styled } from "../../../styles/stitches.config";
+import { styled } from "../../../styles/stitches.config";
 
 export const NavigationList = styled(NavigationMenu.List, {
   display: "flex",

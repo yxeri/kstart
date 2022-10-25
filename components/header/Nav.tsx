@@ -1,12 +1,9 @@
 import { NavigationRoot } from "../styledComponents/navigation/NavigationRoot";
 import { NavigationList } from "../styledComponents/navigation/NavigationList";
 import { NavigationItem } from "../styledComponents/navigation/NavigationItem";
-import { StyledNavLink } from "../styledComponents/navigation/StyledNavLink";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { NavigationTrigger } from "../styledComponents/navigation/NavigationTrigger";
 import { NavigationItemDrop } from "../styledComponents/navigation/NavigationItemDrop";
-
-import { Button } from "../styledComponents/Button";
 
 import { StyledLink } from "../styledComponents/navigation/StyledLink";
 

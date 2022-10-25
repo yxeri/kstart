@@ -1,10 +1,10 @@
 import { ChangeEvent, FormEvent, useState, FocusEvent } from "react";
-import { User } from "./User";
-import { IUserInformation } from "../../models/userInformation";
-import styles from "../../styles/UserForms.module.css";
-import { validateForm } from "../../validation/validateUserForm";
-import { IValidation } from "../../models/validationModel";
-import { formData } from "../../formData/formData";
+import { User } from "../User/User";
+import { IUserInformation } from "../../../models/userInformation";
+import styles from "./FormField.module.css";
+import { validateForm } from "../../../validation/validateUserForm";
+import { IValidation } from "../../../models/validationModel";
+import { formData } from "../../../formData/formData";
 import { Input } from "./Input";
 
 type fields = "firstName" | "lastName" | "email";

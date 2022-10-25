@@ -1,8 +1,8 @@
 import { NextPage } from "next";
-import UserForm from "../components/forms/UserForm";
-import UserFormReactHookForm from "../components/forms/UserFormReactHookForm";
-import { UserList } from "../components/forms/UserList";
-import styles from "../styles/Forms.module.css";
+import UserForm from "../components/forms/Forms/UserForm";
+import UserFormReactHookForm from "../components/forms/Forms/UserFormReactHookForm";
+import { UserList } from "../components/forms/UserList/UserList";
+import styles from "../styles/formPage.module.css";
 
 const Forms: NextPage = () => {
   return (

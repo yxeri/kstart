@@ -9,7 +9,11 @@ const StyledNavigationMenuLink = styled(NavigationMenu.Link, {
   "&[data-active]": { fontWeight: "bold" },
 });
 
-export const StyledLink = ({ href, ...props }) => {
+type StyledLinkProps = NavigationMenu.NavigationMenuLinkProps & {
+  href: string;
+};
+
+export const StyledLink = ({ href, ...props }: StyledLinkProps) => {
   const router = useRouter();
   const isActive = router.asPath === href;
 

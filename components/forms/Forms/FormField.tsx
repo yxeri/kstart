@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import styles from "../../styles/UserForms.module.css";
+import styles from "./FormField.module.css";
 
 interface IFormField {
   field: {
