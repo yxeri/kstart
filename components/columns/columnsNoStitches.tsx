@@ -1,4 +1,4 @@
-import styles from "../styles/NoStitches.module.css";
+import styles from "../../styles/NoStitches.module.css";
 export const ColumnsNoStitches = () => {
   return (
     <>

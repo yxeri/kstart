@@ -31,7 +31,6 @@ export const MyAccordion = () => {
   const AccordionTrigger = styled(Accordion.Trigger, {
     width: "220px",
     background: "transparent",
-    //border: "3px solid black",
     borderRadius: "30px",
   });
 

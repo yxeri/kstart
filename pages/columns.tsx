@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { ColumnsNoStitches } from "../components/columnsNoStitches";
+import { ColumnsNoStitches } from "../components/columns/columnsNoStitches";
 const NoStitches: NextPage = () => {
   return (
     <>
