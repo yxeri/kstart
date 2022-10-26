@@ -3,7 +3,6 @@ import { styled } from "../../../styles/stitches.config";
 
 export const NavigationList = styled(NavigationMenu.List, {
   display: "flex",
-  //alignItems: "center",
   gap: "30px",
   flexDirection: "column",
   background: "$krusoGreen",

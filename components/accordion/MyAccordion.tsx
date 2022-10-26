@@ -46,39 +46,37 @@ const AccordionContent = styled(Accordion.Content, {
 
 export const MyAccordion = () => {
   return (
-    <>
-      <AccordionRoot type="single" collapsible defaultValue="item-1">
-        <AccordionItem value="item-1">
-          <AccordionHeader>
-            <AccordionTrigger css={{ border: "3px solid #041b32" }}>
-              <h2>Im Open!</h2>
-            </AccordionTrigger>
-          </AccordionHeader>
-          <AccordionContent>
-            <p>Hello!</p>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionHeader>
-            <AccordionTrigger css={{ border: "3px solid #052838" }}>
-              <h2>Click Me!</h2>
-            </AccordionTrigger>
-          </AccordionHeader>
-          <AccordionContent>
-            <p>Hello Again!</p>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-3">
-          <AccordionHeader>
-            <AccordionTrigger css={{ border: "3px solid #063c43" }}>
-              <h2>Click Me Too!</h2>
-            </AccordionTrigger>
-          </AccordionHeader>
-          <AccordionContent>
-            <p>Party!</p>
-          </AccordionContent>
-        </AccordionItem>
-      </AccordionRoot>
-    </>
+    <AccordionRoot type="single" collapsible defaultValue="item-1">
+      <AccordionItem value="item-1">
+        <AccordionHeader>
+          <AccordionTrigger css={{ border: "3px solid #041b32" }}>
+            <h2>Im Open!</h2>
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+          <p>Hello!</p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionHeader>
+          <AccordionTrigger css={{ border: "3px solid #052838" }}>
+            <h2>Click Me!</h2>
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+          <p>Hello Again!</p>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-3">
+        <AccordionHeader>
+          <AccordionTrigger css={{ border: "3px solid #063c43" }}>
+            <h2>Click Me Too!</h2>
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+          <p>Party!</p>
+        </AccordionContent>
+      </AccordionItem>
+    </AccordionRoot>
   );
 };
