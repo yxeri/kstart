@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
-import { userListState } from "../atoms/atoms";
-import { User } from "./User";
-import styles from "../styles/UserList.module.css";
+import { userListState } from "../../../atoms/atoms";
+import { User } from "../User/User";
+import styles from "./UserList.module.css";
 
 export const UserList = () => {
   const userList = useRecoilValue(userListState);

@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import styles from "../styles/UserForms.module.css";
+import styles from "./FormField.module.css";
 
 interface IFormField {
   field: {
@@ -19,8 +19,6 @@ export const FormField = ({ field }: IFormField) => {
     register,
     formState: { errors },
   } = useFormContext();
-
-  console.log("errors", errors, errors[field.id]);
 
   return (
     <div className={styles.labelInputContainer}>

@@ -5,10 +5,10 @@ import {
   FormProvider,
 } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
-import { userListState } from "../atoms/atoms";
-import styles from "../styles/UserForms.module.css";
+import { userListState } from "../../../atoms/atoms";
+import styles from "./FormField.module.css";
 import { FormField } from "./FormField";
-import { RHFFormData } from "../formData/RHFFormData";
+import { RHFFormData } from "../../../formData/RHFFormData";
 
 const UserFormReactHookForm = () => {
   const methods = useForm({
@@ -18,10 +18,6 @@ const UserFormReactHookForm = () => {
   const setUserList = useSetRecoilState(userListState);
 
   const onSubmit: SubmitHandler<FieldValues> = (user) => {
-    console.log("hello!");
-
-    console.log(user);
-
     setUserList((current) => [
       ...current,
       { firstName: user.firstName, lastName: user.lastName, email: user.email },

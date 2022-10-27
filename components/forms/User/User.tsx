@@ -1,5 +1,5 @@
-import { IUserInformation } from "../models/userInformation";
-import styles from "../styles/User.module.css";
+import { IUserInformation } from "../../../models/userInformation";
+import styles from "./User.module.css";
 
 interface IUser {
   user: IUserInformation;

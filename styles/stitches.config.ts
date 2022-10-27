@@ -10,6 +10,12 @@ export const {
   createTheme,
   config,
 } = createStitches({
+  theme: {
+    colors: {
+      krusoGreen: "#3e4c31",
+      krusoYellow: "#bf8e30",
+    },
+  },
   media: {
     bp1: "(min-width: 688px)",
     bp2: "(min-width: 992px)",
