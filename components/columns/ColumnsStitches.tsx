@@ -10,6 +10,8 @@ export const ColumnsStitches = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        background: "$background",
+        color: "$text",
       }}
     >
       <Heading>Stitches</Heading>
