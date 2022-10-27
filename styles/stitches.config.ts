@@ -6,14 +6,16 @@ export const {
   globalCss,
   keyframes,
   getCssText,
-  theme,
   createTheme,
   config,
 } = createStitches({
   theme: {
     colors: {
-      krusoGreen: "#3e4c31",
-      krusoYellow: "#bf8e30",
+      primary: "#ff8e3c",
+      secondary: "#ff753d",
+      text: "#2B3A42",
+      background: "#fff",
+      backgroundSecondary: "#e5eef2",
     },
   },
   media: {
@@ -22,4 +24,14 @@ export const {
     bp3: "(min-width: 1312px)",
   },
   utils: {},
+});
+
+export const darkTheme = createTheme({
+  colors: {
+    backgroundSecondary: "#e5eef2",
+    primary: "#ff8906",
+    secondary: "#ff753d",
+    text: "#EFEFEF",
+    background: "#131a1e",
+  },
 });

@@ -3,6 +3,7 @@ import { Nav } from "./Nav";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Button } from "../styledComponents/Button";
 import { Header } from "../styledComponents/Header";
+import { ThemeSwitch } from "../themeProvider/ThemeSwitch";
 
 export const HeaderNav = () => {
   const [isOpen, setOpen] = useState(false);
@@ -28,6 +29,7 @@ export const HeaderNav = () => {
         </Button>
 
         <Nav isOpen={isOpen} handleClick={handleClick} />
+        <ThemeSwitch />
       </Header>
     </>
   );

@@ -5,6 +5,7 @@ import { styled } from "../../../styles/stitches.config";
 
 const NextLink = Link;
 const StyledNavigationMenuLink = styled(NavigationMenu.Link, {
+  color: "$primary",
   textDecoration: "none",
   "&[data-active]": { fontWeight: "bold" },
 });

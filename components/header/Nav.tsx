@@ -28,8 +28,8 @@ export const Nav = ({ handleClick, isOpen }: INavProps) => {
                 position: "absolute",
                 borderRadius: "10px",
                 padding: "20px",
-                background: "$krusoYellow",
-                color: "$krusoGreen",
+                background: "$backgroundSecondary",
+                color: "$text",
                 marginTop: "10px",
                 display: "flex",
                 flexDirection: "column",
@@ -37,6 +37,7 @@ export const Nav = ({ handleClick, isOpen }: INavProps) => {
                 height: "auto",
                 width: "230px",
                 "@bp1": { top: "0", left: "0" },
+                boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px;",
               }}
             >
               <NavigationItem onClick={handleClick}>

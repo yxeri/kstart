@@ -5,11 +5,13 @@ export const NavigationList = styled(NavigationMenu.List, {
   display: "flex",
   gap: "30px",
   flexDirection: "column",
-  background: "$krusoGreen",
+  background: "$backgroundSecondary",
   position: "absolute",
   height: "100vh",
   padding: "30px 130px 0px 30px",
   transition: "left 0.5s",
+  listStyleType: "none",
+  color: "$text",
   "@bp1": {
     position: "relative",
     flexDirection: "row",
@@ -48,6 +50,4 @@ export const NavigationList = styled(NavigationMenu.List, {
       },
     },
   },
-  listStyleType: "none",
-  color: "$krusoYellow",
 });

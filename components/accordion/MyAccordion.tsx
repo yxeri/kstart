@@ -1,5 +1,6 @@
 import * as Accordion from "@radix-ui/react-accordion";
 import { styled, keyframes } from "@stitches/react";
+import { Heading } from "../styledComponents/Heading";
 
 const open = keyframes({
   from: { height: 0 },
@@ -11,8 +12,7 @@ const close = keyframes({
   to: { height: 0 },
 });
 const AccordionRoot = styled(Accordion.Root, {
-  background:
-    "linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(7,78,76,1) 100%)",
+  background: "$backgroundSecondary",
   padding: "20px",
   borderRadius: "30px",
   display: "flex",
@@ -30,8 +30,11 @@ const AccordionItem = styled(Accordion.Item, {
 
 const AccordionTrigger = styled(Accordion.Trigger, {
   width: "220px",
-  background: "transparent",
+  background: "$background",
   borderRadius: "30px",
+  color: "$text",
+  border: "2px solid gray",
+  cursor: "pointer",
 });
 
 const AccordionHeader = styled(Accordion.Header, {
@@ -49,32 +52,53 @@ export const MyAccordion = () => {
     <AccordionRoot type="single" collapsible defaultValue="item-1">
       <AccordionItem value="item-1">
         <AccordionHeader>
-          <AccordionTrigger css={{ border: "3px solid #041b32" }}>
-            <h2>Im Open!</h2>
+          <AccordionTrigger>
+            <Heading as="h2" css={{ fontFamily: "sans-serif" }}>
+              Im Open!
+            </Heading>
           </AccordionTrigger>
         </AccordionHeader>
         <AccordionContent>
-          <p>Hello!</p>
+          <Heading
+            as="h2"
+            css={{ color: "$primary", fontFamily: "sans-serif" }}
+          >
+            Hello!
+          </Heading>
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
         <AccordionHeader>
-          <AccordionTrigger css={{ border: "3px solid #052838" }}>
-            <h2>Click Me!</h2>
+          <AccordionTrigger>
+            <Heading as="h2" css={{ fontFamily: "sans-serif" }}>
+              Click Me!
+            </Heading>
           </AccordionTrigger>
         </AccordionHeader>
         <AccordionContent>
-          <p>Hello Again!</p>
+          <Heading
+            as="h2"
+            css={{ color: "$primary", fontFamily: "sans-serif" }}
+          >
+            Hello again!
+          </Heading>
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">
         <AccordionHeader>
-          <AccordionTrigger css={{ border: "3px solid #063c43" }}>
-            <h2>Click Me Too!</h2>
+          <AccordionTrigger>
+            <Heading as="h2" css={{ fontFamily: "sans-serif" }}>
+              Click Me Too!
+            </Heading>
           </AccordionTrigger>
         </AccordionHeader>
         <AccordionContent>
-          <p>Party!</p>
+          <Heading
+            as="h2"
+            css={{ color: "$primary", fontFamily: "sans-serif" }}
+          >
+            Party!
+          </Heading>
         </AccordionContent>
       </AccordionItem>
     </AccordionRoot>
