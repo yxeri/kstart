@@ -55,6 +55,9 @@ export const Nav = ({ handleClick, isOpen }: INavProps) => {
                   Radix Accordion
                 </StyledLink>
               </NavigationItem>
+              <NavigationItem onClick={handleClick}>
+                <StyledLink href={"/apiConnect"}>Api Connect</StyledLink>
+              </NavigationItem>
             </NavigationList>
           </NavigationMenu.Content>
         </NavigationItemDrop>

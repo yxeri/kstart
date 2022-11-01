@@ -24,6 +24,7 @@ export const Input = ({
   userInformation,
 }: IInputProps) => {
   const validationObject = validation.get(inputInformation.id);
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     handleChange(e);
   };

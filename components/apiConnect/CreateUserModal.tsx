@@ -6,7 +6,7 @@ import {
   FieldValues,
   FormProvider,
 } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { larpsFormData } from "../../formData/larpsFromData";
 import { StyledForm } from "../styledComponents/StyledForm";
 import { LarpsUserModel } from "../../models/larpsUserModel";
@@ -14,23 +14,27 @@ import { Button } from "../styledComponents/Button";
 interface CreateUserModalProps {
   setNewUser(newUser: LarpsUserModel): void;
   newUser: LarpsUserModel;
+  isCreated: boolean;
 }
 export const CreateUserModal = ({
   setNewUser,
   newUser,
+  isCreated,
 }: CreateUserModalProps) => {
   const [open, setOpen] = useState(false);
   const methods = useForm({
     mode: "onBlur",
   });
 
-  const { reset } = useForm();
-
   const onSubmit: SubmitHandler<FieldValues> = (user: FieldValues) => {
     setNewUser({
-      username: user.username,
-      password: user.password,
-      offName: user.offName,
+      data: {
+        user: {
+          username: user.username,
+          password: user.password,
+          offName: user.offName,
+        },
+      },
     });
   };
 
@@ -47,9 +51,7 @@ export const CreateUserModal = ({
             <FormProvider {...methods}>
               <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
                 {formFields}
-                <Button onClick={() => reset()} type="submit">
-                  Submit
-                </Button>
+                <Button type="submit">Submit</Button>
               </StyledForm>
             </FormProvider>
           </Dialog.Content>
