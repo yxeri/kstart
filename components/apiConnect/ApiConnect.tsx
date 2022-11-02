@@ -1,28 +1,38 @@
 import { useEffect, useState } from "react";
 import { LarpsUserModel } from "../../models/larpsUserModel";
-import { createUser } from "../../services/larpUserService";
+import { createUser, loginUser } from "../../services/larpUserService";
 import { CreateUserModal } from "./CreateUserModal";
 import { ToastContainer, toast } from "react-toastify";
+import { Box } from "../styledComponents/Box";
+import "react-toastify/dist/ReactToastify.css";
+import { LoginModal } from "./LoginModal";
+import { LoginModel } from "../../models/loginModel";
+import { setCookie, getCookie, deleteCookie } from "cookies-next";
+import { Button } from "../styledComponents/Button";
 
 export const ApiConnect = () => {
   const [newUser, setNewUser] = useState<LarpsUserModel>({
     data: { user: { username: "", password: "", offName: "" } },
   });
-  const [isCreated, setIsCreated] = useState(false);
+  const [loginInformation, setLoginInformation] = useState<LoginModel>({
+    data: { user: { username: "", password: "" }, token: "", id: "" },
+  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const notify = (errorMessage: string) => {
-    toast(errorMessage, {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
+  //FOR LATER USE
+  const [isLoggedInInfo, setIsLoggedInInfo] = useState<LoginModel>({
+    data: { user: { username: "", password: "" }, token: "", id: "" },
+  });
 
+  //CHECK LOGGED IN STASTUS
+  useEffect(() => {
+    const cookie = getCookie("token");
+    if (cookie) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  //CREATE USER
   useEffect(() => {
     if (
       newUser.data.user.username !== "" &&
@@ -31,41 +41,92 @@ export const ApiConnect = () => {
     ) {
       createUser(newUser)
         .then(() => {
-          setIsCreated(true);
-          notify("Sucsess!");
+          toast.success("Sucsess!");
         })
         .catch((error) => {
           if (error.response.status === 400) {
-            notify("Try an simpler username");
+            toast.warn("Try an simpler username");
           } else if (error.response.status === 403) {
-            notify("username already exists");
+            toast.warn("Username already exists");
           } else if (error.response.status === 500) {
-            notify("Server is down");
+            toast.error("Server is down");
+          } else {
+            console.log("ERROR: ", error);
           }
         });
     }
   }, [newUser]);
-  console.log("isCreated: ", isCreated);
+
+  //LOG IN
+  useEffect(() => {
+    if (
+      loginInformation.data.user.username !== "" &&
+      loginInformation.data.user.password !== ""
+    ) {
+      loginUser(loginInformation)
+        .then((data) => {
+          setCookie("token", data.data.data.token);
+          setIsLoggedInInfo(data.data);
+          setIsLoggedIn(true);
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            toast.warn("User doesen't exist");
+          } else if (error.response.status == 401) {
+            toast.warn("incorrect password");
+          } else if (error.response.status === 500) {
+            toast.error("Server is down");
+          } else {
+            console.log("loginError: ", error);
+          }
+        });
+    }
+  }, [loginInformation]);
+
+  //LOG OUT
+  const logOut = () => {
+    deleteCookie("token");
+    setIsLoggedIn(false);
+  };
 
   return (
-    <>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-      <CreateUserModal
-        setNewUser={setNewUser}
-        newUser={newUser}
-        isCreated={isCreated}
-      />
-    </>
+    <Box
+      css={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingTop: "70px",
+      }}
+    >
+      {isLoggedIn ? (
+        <Button onClick={logOut}>Log Out</Button>
+      ) : (
+        <Box
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "15px",
+          }}
+        >
+          <CreateUserModal setNewUser={setNewUser} />
+          <LoginModal setLoginInformation={setLoginInformation} />
+        </Box>
+      )}
+      <Box css={{ zIndex: "1" }}>
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+      </Box>
+    </Box>
   );
 };

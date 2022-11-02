@@ -1,5 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { LarpFormField } from "./LarpFormField";
+import { Content } from "../styledComponents/modal/Content";
+import { Overlay } from "../styledComponents/modal/Overlay";
+import { Trigger } from "../styledComponents/modal/Trigger";
 import {
   useForm,
   SubmitHandler,
@@ -7,44 +9,45 @@ import {
   FormProvider,
 } from "react-hook-form";
 import { useState } from "react";
-import { larpsFormData } from "../../formData/larpsFromData";
 import { StyledForm } from "../styledComponents/StyledForm";
-import { LarpsUserModel } from "../../models/larpsUserModel";
+import { loginFormData } from "../../formData/loginFormData";
+import { LarpFormField } from "./LarpFormField";
 import { Button } from "../styledComponents/Button";
-import { Overlay } from "../styledComponents/modal/Overlay";
-import { Trigger } from "../styledComponents/modal/Trigger";
-import { Content } from "../styledComponents/modal/Content";
+import { LoginModel } from "../../models/loginModel";
 
-interface CreateUserModalProps {
-  setNewUser(newUser: LarpsUserModel): void;
+interface LoginModalProps {
+  setLoginInformation(loginInformation: LoginModel): void;
 }
 
-export const CreateUserModal = ({ setNewUser }: CreateUserModalProps) => {
+export const LoginModal = ({ setLoginInformation }: LoginModalProps) => {
   const [open, setOpen] = useState(false);
+
   const methods = useForm({
     mode: "onBlur",
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (user: FieldValues) => {
-    setOpen(false);
-    setNewUser({
+  const onSubmit: SubmitHandler<FieldValues> = (
+    loginInformation: FieldValues
+  ) => {
+    setLoginInformation({
       data: {
         user: {
-          username: user.username,
-          password: user.password,
-          offName: user.offName,
+          username: loginInformation.username,
+          password: loginInformation.password,
         },
+        token: "",
+        id: "",
       },
     });
   };
 
-  const formFields = larpsFormData.map((field) => {
+  const formFields = loginFormData.map((field) => {
     return <LarpFormField key={field.id} field={field} />;
   });
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Trigger>Create New User</Trigger>
+      <Trigger>Login</Trigger>
       <Dialog.Portal>
         <Overlay>
           <Content>
