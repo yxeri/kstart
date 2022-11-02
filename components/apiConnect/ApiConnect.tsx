@@ -7,7 +7,7 @@ import { Box } from "../styledComponents/Box";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginModal } from "./LoginModal";
 import { LoginModel } from "../../models/loginModel";
-import { setCookie, getCookie, deleteCookie } from "cookies-next";
+import { setCookie, getCookie, deleteCookie, hasCookie } from "cookies-next";
 import { Button } from "../styledComponents/Button";
 
 export const ApiConnect = () => {
@@ -17,20 +17,12 @@ export const ApiConnect = () => {
   const [loginInformation, setLoginInformation] = useState<LoginModel>({
     data: { user: { username: "", password: "" }, token: "", id: "" },
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(hasCookie("token"));
 
   //FOR LATER USE
   const [isLoggedInInfo, setIsLoggedInInfo] = useState<LoginModel>({
     data: { user: { username: "", password: "" }, token: "", id: "" },
   });
-
-  //CHECK LOGGED IN STASTUS
-  useEffect(() => {
-    const cookie = getCookie("token");
-    if (cookie) {
-      setIsLoggedIn(true);
-    }
-  }, []);
 
   //CREATE USER
   useEffect(() => {
