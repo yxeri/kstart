@@ -25,6 +25,12 @@ export const LoginModal = ({ setLoginInformation }: LoginModalProps) => {
   const methods = useForm({
     mode: "onBlur",
   });
+  /*   const { reset } = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  }); */
 
   const onSubmit: SubmitHandler<FieldValues> = (
     loginInformation: FieldValues
@@ -39,6 +45,7 @@ export const LoginModal = ({ setLoginInformation }: LoginModalProps) => {
         id: "",
       },
     });
+    methods.reset();
   };
 
   const formFields = loginFormData.map((field) => {

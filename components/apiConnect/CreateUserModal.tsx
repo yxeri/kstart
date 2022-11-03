@@ -6,7 +6,7 @@ import {
   FieldValues,
   FormProvider,
 } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { larpsFormData } from "../../formData/larpsFromData";
 import { StyledForm } from "../styledComponents/StyledForm";
 import { LarpsUserModel } from "../../models/larpsUserModel";
@@ -17,16 +17,27 @@ import { Content } from "../styledComponents/modal/Content";
 
 interface CreateUserModalProps {
   setNewUser(newUser: LarpsUserModel): void;
+  isSuccessful: boolean;
+  openModal(): void;
 }
 
-export const CreateUserModal = ({ setNewUser }: CreateUserModalProps) => {
+export const CreateUserModal = ({
+  setNewUser,
+  isSuccessful,
+  openModal,
+}: CreateUserModalProps) => {
   const [open, setOpen] = useState(false);
   const methods = useForm({
     mode: "onBlur",
   });
 
+  useEffect(() => {
+    if (isSuccessful) {
+      setOpen(false);
+    }
+  }, [isSuccessful]);
+
   const onSubmit: SubmitHandler<FieldValues> = (user: FieldValues) => {
-    setOpen(false);
     setNewUser({
       data: {
         user: {
@@ -36,6 +47,7 @@ export const CreateUserModal = ({ setNewUser }: CreateUserModalProps) => {
         },
       },
     });
+    methods.reset();
   };
 
   const formFields = larpsFormData.map((field) => {
@@ -44,7 +56,7 @@ export const CreateUserModal = ({ setNewUser }: CreateUserModalProps) => {
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Trigger>Create New User</Trigger>
+      <Trigger onClick={openModal}>Create New User</Trigger>
       <Dialog.Portal>
         <Overlay>
           <Content>

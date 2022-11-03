@@ -29,13 +29,13 @@ export const LarpFormField = ({ field }: LarpFormField) => {
     <Box css={{ display: "flex", flexDirection: "column", gap: "5px" }}>
       <StyledLabel htmlFor={field.id}>{field.label}</StyledLabel>
       <StyledInput
-        type={field.type}
         {...register(field.id, {
           minLength: field.rules.minLength,
           maxLength: field.rules.maxLength,
           pattern: field.rules.pattern,
           required: field.rules.required,
         })}
+        type={field.type}
       />
       {errors[field.id] && (
         <Text css={{ color: "Red", fontSize: "0.7rem" }}>

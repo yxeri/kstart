@@ -7,8 +7,10 @@ import { Box } from "../styledComponents/Box";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginModal } from "./LoginModal";
 import { LoginModel } from "../../models/loginModel";
-import { setCookie, getCookie, deleteCookie, hasCookie } from "cookies-next";
+import { setCookie, deleteCookie, hasCookie } from "cookies-next";
 import { Button } from "../styledComponents/Button";
+import { Loader } from "../loader/Loader";
+import { Text } from "../styledComponents/Text";
 
 export const ApiConnect = () => {
   const [newUser, setNewUser] = useState<LarpsUserModel>({
@@ -18,6 +20,8 @@ export const ApiConnect = () => {
     data: { user: { username: "", password: "" }, token: "", id: "" },
   });
   const [isLoggedIn, setIsLoggedIn] = useState(hasCookie("token"));
+  const [isSuccessful, setIsSuccsessful] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   //FOR LATER USE
   const [isLoggedInInfo, setIsLoggedInInfo] = useState<LoginModel>({
@@ -31,9 +35,11 @@ export const ApiConnect = () => {
       newUser.data.user.password !== "" &&
       newUser.data.user.offName !== ""
     ) {
+      setIsLoading(true);
       createUser(newUser)
         .then(() => {
-          toast.success("Sucsess!");
+          toast.success("Succsess!");
+          setIsSuccsessful(true);
         })
         .catch((error) => {
           if (error.response.status === 400) {
@@ -45,6 +51,9 @@ export const ApiConnect = () => {
           } else {
             console.log("ERROR: ", error);
           }
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   }, [newUser]);
@@ -55,6 +64,7 @@ export const ApiConnect = () => {
       loginInformation.data.user.username !== "" &&
       loginInformation.data.user.password !== ""
     ) {
+      setIsLoading(true);
       loginUser(loginInformation)
         .then((data) => {
           setCookie("token", data.data.data.token);
@@ -71,14 +81,24 @@ export const ApiConnect = () => {
           } else {
             console.log("loginError: ", error);
           }
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     }
   }, [loginInformation]);
+
+  const openModal = () => {
+    setIsSuccsessful(false);
+  };
 
   //LOG OUT
   const logOut = () => {
     deleteCookie("token");
     setIsLoggedIn(false);
+    setIsLoggedInInfo({
+      data: { user: { username: "", password: "" }, token: "", id: "" },
+    });
   };
 
   return (
@@ -90,8 +110,19 @@ export const ApiConnect = () => {
         paddingTop: "70px",
       }}
     >
-      {isLoggedIn ? (
-        <Button onClick={logOut}>Log Out</Button>
+      {isLoading ? (
+        <Loader />
+      ) : isLoggedIn ? (
+        <Box
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Text>Welcome {isLoggedInInfo.data.user.username}</Text>
+          <Button onClick={logOut}>Log Out</Button>
+        </Box>
       ) : (
         <Box
           css={{
@@ -101,7 +132,11 @@ export const ApiConnect = () => {
             gap: "15px",
           }}
         >
-          <CreateUserModal setNewUser={setNewUser} />
+          <CreateUserModal
+            setNewUser={setNewUser}
+            isSuccessful={isSuccessful}
+            openModal={openModal}
+          />
           <LoginModal setLoginInformation={setLoginInformation} />
         </Box>
       )}
