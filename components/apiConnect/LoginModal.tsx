@@ -13,39 +13,66 @@ import { StyledForm } from "../styledComponents/StyledForm";
 import { loginFormData } from "../../formData/loginFormData";
 import { LarpFormField } from "./LarpFormField";
 import { Button } from "../styledComponents/Button";
-import { LoginModel } from "../../models/loginModel";
+import { LoginModel, LoginModelResponse } from "../../models/loginModel";
+import { loginUser } from "../../services/larpUserService";
+import { setCookie } from "cookies-next";
+import { toast } from "react-toastify";
+/* import { loggedInUser } from "../../atoms/atoms"; */
 
 interface LoginModalProps {
-  setLoginInformation(loginInformation: LoginModel): void;
+  login(user: LoginModelResponse): void;
+  setIsLoading(value: boolean): void;
+  setIsLoggedIn(value: boolean): void;
 }
 
-export const LoginModal = ({ setLoginInformation }: LoginModalProps) => {
+export const LoginModal = ({
+  login,
+  setIsLoading,
+  setIsLoggedIn,
+}: LoginModalProps) => {
   const [open, setOpen] = useState(false);
-
+  /*   const setLoggedInUser = useSetRecoilState(loggedInUser); */
   const methods = useForm({
     mode: "onBlur",
   });
-  /*   const { reset } = useForm({
-    defaultValues: {
-      username: "",
-      password: "",
-    },
-  }); */
 
-  const onSubmit: SubmitHandler<FieldValues> = (
-    loginInformation: FieldValues
-  ) => {
-    setLoginInformation({
+  const onSubmit: SubmitHandler<FieldValues> = (loginValues: FieldValues) => {
+    const loginInformation: LoginModel = {
       data: {
         user: {
-          username: loginInformation.username,
-          password: loginInformation.password,
+          username: loginValues.username,
+          password: loginValues.password,
         },
-        token: "",
-        id: "",
       },
-    });
-    methods.reset();
+    };
+
+    setIsLoading(true);
+    loginUser(loginInformation)
+      .then((response) => {
+        toast.success("Succsessfully logged in");
+        setCookie("token", response.data.token);
+        console.log("response: ", response.data);
+        login(response);
+        setIsLoggedIn(true);
+        setOpen(false);
+        methods.reset();
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+
+        if (error.response.status === 404) {
+          toast.warn("User doesen't exist");
+        } else if (error.response.status == 401) {
+          toast.warn("incorrect password");
+        } else if (error.response.status === 500) {
+          toast.error("Server is down");
+        } else {
+          console.log("loginError: ", error);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const formFields = loginFormData.map((field) => {

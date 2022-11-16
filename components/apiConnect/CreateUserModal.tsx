@@ -6,39 +6,28 @@ import {
   FieldValues,
   FormProvider,
 } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { larpsFormData } from "../../formData/larpsFromData";
 import { StyledForm } from "../styledComponents/StyledForm";
-import { LarpsUserModel } from "../../models/larpsUserModel";
 import { Button } from "../styledComponents/Button";
 import { Overlay } from "../styledComponents/modal/Overlay";
 import { Trigger } from "../styledComponents/modal/Trigger";
 import { Content } from "../styledComponents/modal/Content";
+import { createUser } from "../../services/larpUserService";
+import { toast } from "react-toastify";
 
 interface CreateUserModalProps {
-  setNewUser(newUser: LarpsUserModel): void;
-  isSuccessful: boolean;
-  openModal(): void;
+  setIsLoading(value: boolean): void;
 }
 
-export const CreateUserModal = ({
-  setNewUser,
-  isSuccessful,
-  openModal,
-}: CreateUserModalProps) => {
+export const CreateUserModal = ({ setIsLoading }: CreateUserModalProps) => {
   const [open, setOpen] = useState(false);
   const methods = useForm({
     mode: "onBlur",
   });
 
-  useEffect(() => {
-    if (isSuccessful) {
-      setOpen(false);
-    }
-  }, [isSuccessful]);
-
   const onSubmit: SubmitHandler<FieldValues> = (user: FieldValues) => {
-    setNewUser({
+    const newUser = {
       data: {
         user: {
           username: user.username,
@@ -46,7 +35,29 @@ export const CreateUserModal = ({
           offName: user.offName,
         },
       },
-    });
+    };
+
+    setIsLoading(true);
+    createUser(newUser)
+      .then(() => {
+        toast.success("Succsess!");
+        setOpen(false);
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          toast.warn("Try an simpler username");
+        } else if (error.response.status === 403) {
+          toast.warn("Username already exists");
+        } else if (error.response.status === 500) {
+          toast.error("Server is down");
+        } else {
+          console.log("ERROR: ", error);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+
     methods.reset();
   };
 
@@ -56,7 +67,7 @@ export const CreateUserModal = ({
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Trigger onClick={openModal}>Create New User</Trigger>
+      <Trigger>Create New User</Trigger>
       <Dialog.Portal>
         <Overlay>
           <Content>

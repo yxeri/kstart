@@ -1,4 +1,5 @@
-import { LoginModel } from "../models/loginModel";
+import axios from "axios";
+import { LoginModel, LoginModelResponse } from "../models/loginModel";
 import { LarpsUserModel } from "./../models/larpsUserModel";
 import { get, post } from "./handleRequests";
 
@@ -9,5 +10,9 @@ export const createUser = async (newUser: LarpsUserModel) => {
 };
 
 export const loginUser = async (userInformation: LoginModel) => {
-  return await post(baseUrl + "login", userInformation);
+  return await post<LoginModelResponse>(baseUrl + "login", userInformation);
 };
+
+/* export const loginUser = (userInformation: LoginModel) => {
+  return axios.post(baseUrl + "login", userInformation);
+}; */

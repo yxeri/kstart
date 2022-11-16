@@ -1,95 +1,38 @@
-import { useEffect, useState } from "react";
-import { LarpsUserModel } from "../../models/larpsUserModel";
-import { createUser, loginUser } from "../../services/larpUserService";
+import { useState } from "react";
 import { CreateUserModal } from "./CreateUserModal";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { Box } from "../styledComponents/Box";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginModal } from "./LoginModal";
-import { LoginModel } from "../../models/loginModel";
-import { setCookie, deleteCookie, hasCookie } from "cookies-next";
+import { LoginModelResponse } from "../../models/loginModel";
+import { deleteCookie, hasCookie } from "cookies-next";
 import { Button } from "../styledComponents/Button";
 import { Loader } from "../loader/Loader";
 import { Text } from "../styledComponents/Text";
+import { Chat } from "./Chat";
+import { ChatButton } from "../ChatButton";
 
 export const ApiConnect = () => {
-  const [newUser, setNewUser] = useState<LarpsUserModel>({
-    data: { user: { username: "", password: "", offName: "" } },
-  });
-  const [loginInformation, setLoginInformation] = useState<LoginModel>({
-    data: { user: { username: "", password: "" }, token: "", id: "" },
-  });
   const [isLoggedIn, setIsLoggedIn] = useState(hasCookie("token"));
-  const [isSuccessful, setIsSuccsessful] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [chatIsOpen, setChatIsOpen] = useState(true);
 
   //FOR LATER USE
-  const [isLoggedInInfo, setIsLoggedInInfo] = useState<LoginModel>({
-    data: { user: { username: "", password: "" }, token: "", id: "" },
+  const [isLoggedInInfo, setIsLoggedInInfo] = useState<LoginModelResponse>({
+    data: {
+      user: { username: "", password: "", followingRooms: [], ownerId: "" },
+      token: "",
+      id: "",
+    },
   });
 
   //CREATE USER
-  useEffect(() => {
-    if (
-      newUser.data.user.username !== "" &&
-      newUser.data.user.password !== "" &&
-      newUser.data.user.offName !== ""
-    ) {
-      setIsLoading(true);
-      createUser(newUser)
-        .then(() => {
-          toast.success("Succsess!");
-          setIsSuccsessful(true);
-        })
-        .catch((error) => {
-          if (error.response.status === 400) {
-            toast.warn("Try an simpler username");
-          } else if (error.response.status === 403) {
-            toast.warn("Username already exists");
-          } else if (error.response.status === 500) {
-            toast.error("Server is down");
-          } else {
-            console.log("ERROR: ", error);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-  }, [newUser]);
+  const login = (userReturn: LoginModelResponse) => {
+    setIsLoggedInInfo(userReturn);
+  };
 
-  //LOG IN
-  useEffect(() => {
-    if (
-      loginInformation.data.user.username !== "" &&
-      loginInformation.data.user.password !== ""
-    ) {
-      setIsLoading(true);
-      loginUser(loginInformation)
-        .then((data) => {
-          setCookie("token", data.data.data.token);
-          setIsLoggedInInfo(data.data);
-          setIsLoggedIn(true);
-        })
-        .catch((error) => {
-          if (error.response.status === 404) {
-            toast.warn("User doesen't exist");
-          } else if (error.response.status == 401) {
-            toast.warn("incorrect password");
-          } else if (error.response.status === 500) {
-            toast.error("Server is down");
-          } else {
-            console.log("loginError: ", error);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-  }, [loginInformation]);
-
-  const openModal = () => {
-    setIsSuccsessful(false);
+  const toggleChat = () => {
+    setChatIsOpen(!chatIsOpen);
   };
 
   //LOG OUT
@@ -97,16 +40,21 @@ export const ApiConnect = () => {
     deleteCookie("token");
     setIsLoggedIn(false);
     setIsLoggedInInfo({
-      data: { user: { username: "", password: "" }, token: "", id: "" },
+      data: {
+        user: { username: "", password: "", followingRooms: [], ownerId: "" },
+        token: "",
+        id: "",
+      },
     });
   };
 
   return (
     <Box
       css={{
+        width: "100vw",
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         paddingTop: "70px",
       }}
     >
@@ -132,12 +80,12 @@ export const ApiConnect = () => {
             gap: "15px",
           }}
         >
-          <CreateUserModal
-            setNewUser={setNewUser}
-            isSuccessful={isSuccessful}
-            openModal={openModal}
+          <CreateUserModal setIsLoading={setIsLoading} />
+          <LoginModal
+            login={login}
+            setIsLoggedIn={setIsLoggedIn}
+            setIsLoading={setIsLoading}
           />
-          <LoginModal setLoginInformation={setLoginInformation} />
         </Box>
       )}
       <Box css={{ zIndex: "1" }}>
@@ -154,6 +102,10 @@ export const ApiConnect = () => {
           theme="dark"
         />
       </Box>
+      {chatIsOpen && <Chat isLoggedInInfo={isLoggedInInfo} />}
+      {isLoggedIn && (
+        <ChatButton chatIsOpen={chatIsOpen} toggleChat={toggleChat} />
+      )}
     </Box>
   );
 };

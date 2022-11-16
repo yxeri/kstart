@@ -22,6 +22,7 @@ const UserFormReactHookForm = () => {
       ...current,
       { firstName: user.firstName, lastName: user.lastName, email: user.email },
     ]);
+    methods.reset();
   };
 
   const formFields = RHFFormData.map((field) => {
