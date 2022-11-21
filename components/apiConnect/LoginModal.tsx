@@ -17,18 +17,19 @@ import { LoginModel, LoginModelResponse } from "../../models/loginModel";
 import { loginUser } from "../../services/larpUserService";
 import { setCookie } from "cookies-next";
 import { toast } from "react-toastify";
+import axios from "axios";
 /* import { loggedInUser } from "../../atoms/atoms"; */
 
 interface LoginModalProps {
   login(user: LoginModelResponse): void;
-  setIsLoading(value: boolean): void;
-  setIsLoggedIn(value: boolean): void;
+  handleLoader(value: boolean): void;
+  handleIsLoggedin(value: boolean): void;
 }
 
 export const LoginModal = ({
   login,
-  setIsLoading,
-  setIsLoggedIn,
+  handleLoader,
+  handleIsLoggedin,
 }: LoginModalProps) => {
   const [open, setOpen] = useState(false);
   /*   const setLoggedInUser = useSetRecoilState(loggedInUser); */
@@ -45,14 +46,42 @@ export const LoginModal = ({
         },
       },
     };
-
-    setIsLoading(true);
+    //sendLogin(loginInformation);
+    handleLoader(true);
     loginUser(loginInformation)
       .then((response) => {
         toast.success("Succsessfully logged in");
         setCookie("token", response.data.token);
         console.log("response: ", response.data);
         login(response);
+        handleIsLoggedin(true);
+        setOpen(false);
+        methods.reset();
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+
+        if (error.response.status === 404) {
+          toast.warn("User doesen't exist");
+        } else if (error.response.status == 401) {
+          toast.warn("incorrect password");
+        } else if (error.response.status === 500) {
+          toast.error("Server is down");
+        } else {
+          console.log("loginError: ", error);
+        }
+      })
+      .finally(() => {
+        handleLoader(false);
+      });
+
+    /* axios
+      .post("http://localhost:3000/api/login", loginInformation)
+      .then((response) => {
+        toast.success("Succsessfully logged in");
+        setCookie("token", response.data.data.token);
+        console.log("response: ", response.data.data);
+        login(response.data);
         setIsLoggedIn(true);
         setOpen(false);
         methods.reset();
@@ -72,8 +101,45 @@ export const LoginModal = ({
       })
       .finally(() => {
         setIsLoading(false);
-      });
+      }); */
   };
+
+  /* const sendLogin = (loginInformation: LoginModel) => {
+    fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginInformation),
+    })
+      .then((data) => data.json())
+      .then((response) => {
+        toast.success("Succsessfully logged in");
+        setCookie("token", response.data.token);
+        console.log("response: ", response.data);
+        login(response);
+        console.log("success: ", response);
+
+        setIsLoggedIn(true);
+        setOpen(false);
+        methods.reset();
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+        if (error.response.status === 404) {
+          toast.warn("User doesen't exist");
+        } else if (error.response.status == 401) {
+          toast.warn("incorrect password");
+        } else if (error.response.status === 500) {
+          toast.error("Server is down");
+        } else {
+          console.log("loginError: ", error);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }; */
 
   const formFields = loginFormData.map((field) => {
     return <LarpFormField key={field.id} field={field} />;

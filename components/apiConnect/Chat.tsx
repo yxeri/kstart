@@ -38,9 +38,15 @@ export const Chat = ({ isLoggedInInfo }: ChatProps) => {
   const getUsersAndMessages = () => {
     getAllUsers(token)
       .then((response) => {
-        response.data.users.forEach((user) => {
+        /*  response.data.users.forEach((user) => {
           setAllUsers(new Map(allUsers.set(user.ownerId, user)));
-        });
+        }); */
+        const allUsers: [string, UserModel][] = response.data.users.map(
+          (user) => {
+            return [user.ownerId, user];
+          }
+        );
+        setAllUsers(new Map(allUsers));
       })
       .catch((error) => {
         console.log("error: ", error);

@@ -15,7 +15,7 @@ import { ChatButton } from "../ChatButton";
 export const ApiConnect = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(hasCookie("token"));
   const [isLoading, setIsLoading] = useState(false);
-  const [chatIsOpen, setChatIsOpen] = useState(true);
+  const [chatIsOpen, setChatIsOpen] = useState(false);
 
   //FOR LATER USE
   const [isLoggedInInfo, setIsLoggedInInfo] = useState<LoginModelResponse>({
@@ -33,6 +33,14 @@ export const ApiConnect = () => {
 
   const toggleChat = () => {
     setChatIsOpen(!chatIsOpen);
+  };
+
+  const handleLoader = (value: boolean) => {
+    setIsLoading(value);
+  };
+
+  const handleIsLoggedin = (value: boolean) => {
+    setIsLoggedIn(value);
   };
 
   //LOG OUT
@@ -58,9 +66,8 @@ export const ApiConnect = () => {
         paddingTop: "70px",
       }}
     >
-      {isLoading ? (
-        <Loader />
-      ) : isLoggedIn ? (
+      {isLoading && <Loader />}
+      {isLoggedIn && (
         <Box
           css={{
             display: "flex",
@@ -71,23 +78,24 @@ export const ApiConnect = () => {
           <Text>Welcome {isLoggedInInfo.data.user.username}</Text>
           <Button onClick={logOut}>Log Out</Button>
         </Box>
-      ) : (
-        <Box
-          css={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "15px",
-          }}
-        >
-          <CreateUserModal setIsLoading={setIsLoading} />
-          <LoginModal
-            login={login}
-            setIsLoggedIn={setIsLoggedIn}
-            setIsLoading={setIsLoading}
-          />
-        </Box>
       )}
+
+      <Box
+        css={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "15px",
+        }}
+      >
+        <CreateUserModal setIsLoading={setIsLoading} />
+        <LoginModal
+          login={login}
+          handleIsLoggedin={setIsLoggedIn}
+          handleLoader={handleLoader}
+        />
+      </Box>
+
       <Box css={{ zIndex: "1" }}>
         <ToastContainer
           position="top-center"

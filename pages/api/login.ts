@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const baseUrl = "https://terminal.thethirdgift.com/api/";
@@ -24,3 +24,31 @@ export default async function handler(
       }
     });
 }
+/* export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const userData = {
+    data: {
+      user: {
+        username: req.body.data.user.username,
+        password: req.body.data.user.password,
+      },
+    },
+  };
+
+  try {
+    let response = await axios.post(
+      "https://terminal.thethirdgift.com/api/authenticate",
+      userData
+    );
+    res.send(response.data);
+  } catch (error) {
+    const err = error as AxiosError;
+
+    if (err) {
+      console.log("Axios Error: " + err.response?.status + " " + err.code);
+      res.send(err.response?.status);
+    }
+  }
+} */
