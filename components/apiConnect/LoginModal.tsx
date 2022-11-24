@@ -17,7 +17,6 @@ import { LoginModel, LoginModelResponse } from "../../models/loginModel";
 import { loginUser } from "../../services/larpUserService";
 import { setCookie } from "cookies-next";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { useSetRecoilState } from "recoil";
 import { loggedInUser } from "../../atoms/atoms";
 /* import { loggedInUser } from "../../atoms/atoms"; */
@@ -47,10 +46,10 @@ export const LoginModal = ({
       },
     };
     //sendLogin(loginInformation);
-    handleLoader(true);
+    //handleLoader(true);
     loginUser(loginInformation)
       .then((response) => {
-        toast.success("Succsessfully logged in");
+        if (response) console.log("response:::::", response);
         setCookie("token", response.data.token);
         console.log("response: ", response.data);
         setLoggedInUser(response);
@@ -60,20 +59,23 @@ export const LoginModal = ({
       })
       .catch((error) => {
         console.log("error: ", error);
-
-        if (error.response.status === 404) {
-          toast.warn("User doesen't exist");
-        } else if (error.response.status == 401) {
-          toast.warn("incorrect password");
-        } else if (error.response.status === 500) {
-          toast.error("Server is down");
-        } else {
-          console.log("loginError: ", error);
-        }
       })
       .finally(() => {
         handleLoader(false);
       });
+
+    /* fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        Accept: "application.json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginInformation),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+      }); */
   };
 
   const formFields = loginFormData.map((field) => {
