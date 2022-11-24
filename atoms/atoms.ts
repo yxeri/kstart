@@ -7,7 +7,7 @@ export const userListState = atom<IUserInformation[]>({
   default: [],
 });
 
-/* export const loggedInUser = atom<LoginModelResponse>({
+export const loggedInUser = atom<LoginModelResponse>({
   key: "loggedInUser",
   default: {
     data: {
@@ -18,7 +18,7 @@ export const userListState = atom<IUserInformation[]>({
         followingRooms: [],
       },
       token: "",
+      id: "",
     },
   },
 });
- */

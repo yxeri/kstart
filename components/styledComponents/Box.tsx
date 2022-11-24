@@ -13,6 +13,12 @@ export const Box = styled("div", {
         flexDirection: "column",
         alignItems: "center",
       },
+      hidden: {
+        true: {
+          border: "1px solid blue",
+        },
+        false: {},
+      },
     },
   },
 });

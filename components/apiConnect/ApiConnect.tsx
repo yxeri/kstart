@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CreateUserModal } from "./CreateUserModal";
 import { ToastContainer } from "react-toastify";
 import { Box } from "../styledComponents/Box";
@@ -11,25 +11,20 @@ import { Loader } from "../loader/Loader";
 import { Text } from "../styledComponents/Text";
 import { Chat } from "./Chat";
 import { ChatButton } from "../ChatButton";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { loggedInUser } from "../../atoms/atoms";
 
 export const ApiConnect = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(hasCookie("token"));
   const [isLoading, setIsLoading] = useState(false);
   const [chatIsOpen, setChatIsOpen] = useState(false);
+  const [userInformation, setUserInformation] = useRecoilState(loggedInUser);
 
-  //FOR LATER USE
-  const [isLoggedInInfo, setIsLoggedInInfo] = useState<LoginModelResponse>({
-    data: {
-      user: { username: "", password: "", followingRooms: [], ownerId: "" },
-      token: "",
-      id: "",
-    },
-  });
-
-  //CREATE USER
-  const login = (userReturn: LoginModelResponse) => {
-    setIsLoggedInInfo(userReturn);
-  };
+  useEffect(() => {
+    if (userInformation.data.id !== "") {
+      setIsLoggedIn(true);
+    }
+  }, [userInformation]);
 
   const toggleChat = () => {
     setChatIsOpen(!chatIsOpen);
@@ -39,15 +34,11 @@ export const ApiConnect = () => {
     setIsLoading(value);
   };
 
-  const handleIsLoggedin = (value: boolean) => {
-    setIsLoggedIn(value);
-  };
-
   //LOG OUT
   const logOut = () => {
     deleteCookie("token");
     setIsLoggedIn(false);
-    setIsLoggedInInfo({
+    setUserInformation({
       data: {
         user: { username: "", password: "", followingRooms: [], ownerId: "" },
         token: "",
@@ -75,12 +66,13 @@ export const ApiConnect = () => {
             alignItems: "center",
           }}
         >
-          <Text>Welcome {isLoggedInInfo.data.user.username}</Text>
+          <Text>Welcome {userInformation.data.user.username}</Text>
           <Button onClick={logOut}>Log Out</Button>
         </Box>
       )}
 
       <Box
+        hidden={isLoggedIn}
         css={{
           display: "flex",
           flexDirection: "column",
@@ -90,7 +82,6 @@ export const ApiConnect = () => {
       >
         <CreateUserModal setIsLoading={setIsLoading} />
         <LoginModal
-          login={login}
           handleIsLoggedin={setIsLoggedIn}
           handleLoader={handleLoader}
         />
@@ -110,7 +101,7 @@ export const ApiConnect = () => {
           theme="dark"
         />
       </Box>
-      {chatIsOpen && <Chat isLoggedInInfo={isLoggedInInfo} />}
+      {chatIsOpen && <Chat />}
       {isLoggedIn && (
         <ChatButton chatIsOpen={chatIsOpen} toggleChat={toggleChat} />
       )}

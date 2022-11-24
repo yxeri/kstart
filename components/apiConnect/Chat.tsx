@@ -12,16 +12,15 @@ import { StyledInput } from "../styledComponents/StyledInput";
 import { Message } from "./Message";
 import { useForm } from "react-hook-form";
 import { ChatMessageForm } from "../ChatMessageForm";
-
-interface ChatProps {
-  isLoggedInInfo: LoginModelResponse;
-}
+import { useRecoilValue } from "recoil";
+import { loggedInUser } from "../../atoms/atoms";
 
 const token = getCookie("token") as string;
 
-export const Chat = ({ isLoggedInInfo }: ChatProps) => {
+export const Chat = () => {
   const [allUsers, setAllUsers] = useState(new Map<string, UserModel>());
   const [messages, setMessages] = useState<MessageModel[]>([]);
+  const userInformation = useRecoilValue(loggedInUser);
 
   const useChatScroll = (dep: MessageModel[]) => {
     const divRef = useRef<HTMLDivElement>(null);
@@ -53,8 +52,8 @@ export const Chat = ({ isLoggedInInfo }: ChatProps) => {
       });
 
     if (
-      isLoggedInInfo.data.user.username !== "" &&
-      isLoggedInInfo.data.user.password !== ""
+      userInformation.data.user.username !== "" &&
+      userInformation.data.user.password !== ""
     ) {
       getAllMessages(token)
         .then((response) => {
