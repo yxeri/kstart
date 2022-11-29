@@ -14,10 +14,9 @@ export const Box = styled("div", {
         alignItems: "center",
       },
       hidden: {
-        true: {
+        false: {
           border: "1px solid blue",
         },
-        false: {},
       },
     },
   },

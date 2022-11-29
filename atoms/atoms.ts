@@ -1,5 +1,5 @@
+import { LoginModelUser } from "./../models/loginModel";
 import { atom } from "recoil";
-import { LoginModelResponse } from "../models/loginModel";
 import { IUserInformation } from "./../models/userInformation";
 
 export const userListState = atom<IUserInformation[]>({
@@ -7,9 +7,10 @@ export const userListState = atom<IUserInformation[]>({
   default: [],
 });
 
-export const loggedInUser = atom<LoginModelResponse>({
+export const loggedInUser = atom<LoginModelUser>({
   key: "loggedInUser",
   default: {
+    isLoggedIn: false,
     data: {
       user: {
         username: "",

@@ -8,33 +8,30 @@ import {
   FieldValues,
   FormProvider,
 } from "react-hook-form";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { StyledForm } from "../styledComponents/StyledForm";
 import { loginFormData } from "../../formData/loginFormData";
 import { LarpFormField } from "./LarpFormField";
 import { Button } from "../styledComponents/Button";
-import { LoginModel, LoginModelResponse } from "../../models/loginModel";
+import { LoginModel } from "../../models/loginModel";
 import { loginUser } from "../../services/larpUserService";
 import { setCookie } from "cookies-next";
-import { toast } from "react-toastify";
 import { useSetRecoilState } from "recoil";
 import { loggedInUser } from "../../atoms/atoms";
-/* import { loggedInUser } from "../../atoms/atoms"; */
+import { toast } from "react-toastify";
 
 interface LoginModalProps {
   handleLoader(value: boolean): void;
-  handleIsLoggedin(value: boolean): void;
 }
 
-export const LoginModal = ({
-  handleLoader,
-  handleIsLoggedin,
-}: LoginModalProps) => {
+export const LoginModal = ({ handleLoader }: LoginModalProps) => {
   const [open, setOpen] = useState(false);
   const setLoggedInUser = useSetRecoilState(loggedInUser);
   const methods = useForm({
     mode: "onBlur",
   });
+
+  console.log("Rerender");
 
   const onSubmit: SubmitHandler<FieldValues> = (loginValues: FieldValues) => {
     const loginInformation: LoginModel = {
@@ -45,37 +42,33 @@ export const LoginModal = ({
         },
       },
     };
-    //sendLogin(loginInformation);
-    //handleLoader(true);
+    handleLoader(true);
     loginUser(loginInformation)
       .then((response) => {
-        if (response) console.log("response:::::", response);
-        setCookie("token", response.data.token);
-        console.log("response: ", response.data);
-        setLoggedInUser(response);
-        handleIsLoggedin(true);
-        setOpen(false);
-        methods.reset();
+        if (response) {
+          toast.success(`Logged In as ${response.data.data.user.username}`);
+          setCookie("token", response.data.data.token);
+          setLoggedInUser({ isLoggedIn: true, data: response.data.data });
+          setOpen(false);
+          methods.reset();
+        }
       })
       .catch((error) => {
-        console.log("error: ", error);
+        console.log("errorModal: ", error);
+        if (error.response.status === 404) {
+          toast.warn("User doesen't exist");
+        } else if (error.response.status === 401) {
+          toast.warn("incorrect password");
+        } else if (error.response.status === 500) {
+          toast.error("Server is down");
+        } else {
+          toast.error("Unknown error");
+          console.log("LUS.Error", error);
+        }
       })
       .finally(() => {
         handleLoader(false);
       });
-
-    /* fetch("http://localhost:3000/api/login", {
-      method: "POST",
-      headers: {
-        Accept: "application.json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginInformation),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-      }); */
   };
 
   const formFields = loginFormData.map((field) => {
