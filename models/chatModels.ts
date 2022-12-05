@@ -7,5 +7,15 @@ export interface MessagesModel {
 export interface MessageModel {
   ownerId: string;
   text: string[];
-  id: string;
+  _id: string;
+  timeCreated: string;
+  roomId: string;
+}
+
+export interface SendMessageModel {
+  data: {
+    message: string[];
+    messageType: string;
+    roomId: string;
+  };
 }

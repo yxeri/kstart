@@ -8,7 +8,7 @@ import {
   FieldValues,
   FormProvider,
 } from "react-hook-form";
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import { StyledForm } from "../styledComponents/StyledForm";
 import { loginFormData } from "../../formData/loginFormData";
 import { LarpFormField } from "./LarpFormField";
@@ -45,6 +45,8 @@ export const LoginModal = ({ handleLoader }: LoginModalProps) => {
     handleLoader(true);
     loginUser(loginInformation)
       .then((response) => {
+        console.log("REsponse", response);
+
         if (response) {
           toast.success(`Logged In as ${response.data.data.user.username}`);
           setCookie("token", response.data.data.token);

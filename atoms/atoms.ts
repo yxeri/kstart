@@ -1,3 +1,4 @@
+import { Room } from "./../models/roomModel";
 import { LoginModelUser } from "./../models/loginModel";
 import { atom } from "recoil";
 import { IUserInformation } from "./../models/userInformation";
@@ -22,4 +23,9 @@ export const loggedInUser = atom<LoginModelUser>({
       id: "",
     },
   },
+});
+
+export const rooms = atom<Map<string, Room>>({
+  key: "rooms",
+  default: new Map(),
 });

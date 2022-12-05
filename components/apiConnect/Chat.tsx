@@ -1,19 +1,19 @@
-import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import { getCookie } from "cookies-next";
-import { forwardRef, useEffect, useRef, useState } from "react";
-import { MessageModel, MessagesModel } from "../../models/chatModels";
-import { LoginModelResponse } from "../../models/loginModel";
-import { AllUsersModel, UserModel } from "../../models/otherUsersModel";
-import { getAllMessages, getAllUsers } from "../../services/larpMessageService";
+import { useEffect, useRef, useState } from "react";
+import { MessageModel, SendMessageModel } from "../../models/chatModels";
+
+import { UserModel } from "../../models/otherUsersModel";
+import {
+  getAllMessages,
+  getAllUsers,
+  getRooms,
+  sendNewMessage,
+} from "../../services/larpMessageService";
 import { Box } from "../styledComponents/Box";
-import { Button } from "../styledComponents/Button";
-import { StyledForm } from "../styledComponents/StyledForm";
-import { StyledInput } from "../styledComponents/StyledInput";
 import { Message } from "./Message";
-import { useForm } from "react-hook-form";
-import { ChatMessageForm } from "../ChatMessageForm";
-import { useRecoilValue } from "recoil";
-import { loggedInUser } from "../../atoms/atoms";
+import { ChatMessageForm } from "./ChatMessageForm";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { loggedInUser, rooms } from "../../atoms/atoms";
 
 const token = getCookie("token") as string;
 
@@ -21,6 +21,7 @@ export const Chat = () => {
   const [allUsers, setAllUsers] = useState(new Map<string, UserModel>());
   const [messages, setMessages] = useState<MessageModel[]>([]);
   const userInformation = useRecoilValue(loggedInUser);
+  const [myRooms, setMyRooms] = useRecoilState(rooms);
 
   const useChatScroll = (dep: MessageModel[]) => {
     const divRef = useRef<HTMLDivElement>(null);
@@ -33,23 +34,23 @@ export const Chat = () => {
   };
   const reference = useChatScroll(messages);
 
-  //GET ALL USERS AND MESSAGES
-  const getUsersAndMessages = () => {
-    getAllUsers(token)
-      .then((response) => {
-        /*  response.data.users.forEach((user) => {
-          setAllUsers(new Map(allUsers.set(user.ownerId, user)));
-        }); */
-        const allUsers: [string, UserModel][] = response.data.users.map(
-          (user) => {
-            return [user.ownerId, user];
-          }
-        );
-        setAllUsers(new Map(allUsers));
-      })
-      .catch((error) => {
-        console.log("error: ", error);
-      });
+  //GET ALL USERS, MESSAGES AND ROOMS
+  useEffect(() => {
+    if (
+      userInformation.data.user.username !== "" &&
+      userInformation.data.user.password !== ""
+    ) {
+      getAllUsers(token)
+        .then((response) => {
+          const users = new Map(
+            response.data.users.map((obj) => [obj.ownerId, obj])
+          );
+          setAllUsers(new Map(users));
+        })
+        .catch((error) => {
+          console.log("error: ", error);
+        });
+    }
 
     if (
       userInformation.data.user.username !== "" &&
@@ -57,19 +58,48 @@ export const Chat = () => {
     ) {
       getAllMessages(token)
         .then((response) => {
-          console.log("messageData", response);
           setMessages(response.data.messages);
         })
         .catch((error) => {
           console.log("messageError: ", error);
         });
     }
+
+    if (
+      userInformation.data.user.username !== "" &&
+      userInformation.data.user.password !== ""
+    ) {
+      getRooms(token)
+        .then((response) => {
+          const allRooms = new Map(
+            response.data.rooms.map((obj) => [obj._id, obj])
+          );
+          setMyRooms(new Map(allRooms));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [
+    userInformation.data.user.username,
+    userInformation.data.user.password,
+    setMyRooms,
+  ]);
+
+  const sendMessage = (newMessage: SendMessageModel) => {
+    sendNewMessage(token, newMessage)
+      .then((response) => {
+        console.log("sendMessageResponse: ", response);
+      })
+      .catch((error) => {
+        console.log("messageError: ", error);
+      });
   };
 
   const message = messages
     .map((mess) => {
       const user = allUsers.get(mess.ownerId);
-      return user && <Message key={mess.id} user={user} message={mess} />;
+      return user && <Message key={mess._id} user={user} message={mess} />;
     })
     .filter((c) => c) as JSX.Element[];
 
@@ -85,7 +115,8 @@ export const Chat = () => {
         background: "$krusoGreen",
         border: "2px solid $krusoYellow",
         borderRadius: "30px",
-        overflow: "scroll",
+        overflowY: "scroll",
+        overflowX: "hidden",
         padding: "20px",
         scrollBehavior: "smooth",
         "@bp1": {
@@ -98,8 +129,10 @@ export const Chat = () => {
         },
       }}
     >
-      {message}
-      <ChatMessageForm />
+      <Box css={{ display: "flex", flexDirection: "column", gap: "13px" }}>
+        {message}
+      </Box>
+      <ChatMessageForm sendMessage={sendMessage} />
     </Box>
   );
 };

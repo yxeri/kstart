@@ -1,10 +1,10 @@
-import { useEffect, useReducer, useState } from "react";
+import { useState } from "react";
 import { CreateUserModal } from "./CreateUserModal";
 import { ToastContainer } from "react-toastify";
 import { Box } from "../styledComponents/Box";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginModal } from "./LoginModal";
-import { deleteCookie, hasCookie } from "cookies-next";
+import { deleteCookie } from "cookies-next";
 import { Button } from "../styledComponents/Button";
 import { Loader } from "../loader/Loader";
 import { Text } from "../styledComponents/Text";
@@ -14,17 +14,9 @@ import { useRecoilState } from "recoil";
 import { loggedInUser } from "../../atoms/atoms";
 
 export const ApiConnect = () => {
-  //const [isLoggedIn, setIsLoggedIn] = useState(hasCookie("token"));
   const [isLoading, setIsLoading] = useState(false);
   const [chatIsOpen, setChatIsOpen] = useState(false);
   const [userInformation, setUserInformation] = useRecoilState(loggedInUser);
-  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
-
-  /*  useEffect(() => {
-    if (userInformation.data.id !== "") {
-      setIsLoggedIn(true);
-    }
-  }, [userInformation]); */
 
   const toggleChat = () => {
     setChatIsOpen(!chatIsOpen);
@@ -32,7 +24,6 @@ export const ApiConnect = () => {
 
   const handleLoader = (value: boolean) => {
     setIsLoading(value);
-    forceUpdate();
   };
 
   //LOG OUT
@@ -52,7 +43,7 @@ export const ApiConnect = () => {
     <Box
       css={{
         width: "100vw",
-        height: "100vh",
+        height: "80vh",
         display: "flex",
         flexDirection: "column",
         paddingTop: "70px",
@@ -74,7 +65,6 @@ export const ApiConnect = () => {
 
       {!userInformation.isLoggedIn && (
         <Box
-          /* hidden={isLoggedIn} */
           css={{
             display: "flex",
             flexDirection: "column",
