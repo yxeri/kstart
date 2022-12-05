@@ -59,6 +59,7 @@ export const Chat = () => {
       getAllMessages(token)
         .then((response) => {
           setMessages(response.data.messages);
+          console.log("messages: ", response.data.messages);
         })
         .catch((error) => {
           console.log("messageError: ", error);
@@ -89,7 +90,7 @@ export const Chat = () => {
   const sendMessage = (newMessage: SendMessageModel) => {
     sendNewMessage(token, newMessage)
       .then((response) => {
-        console.log("sendMessageResponse: ", response);
+        setMessages((messages) => [...messages, response]);
       })
       .catch((error) => {
         console.log("messageError: ", error);

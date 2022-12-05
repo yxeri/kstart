@@ -1,4 +1,4 @@
-import { SendMessageModel } from "./../models/chatModels";
+import { MessageModel, SendMessageModel } from "./../models/chatModels";
 import { roomModel } from "./../models/roomModel";
 import { AllUsersModel } from "./../models/otherUsersModel";
 import { MessagesModel } from "../models/chatModels";
@@ -21,5 +21,8 @@ export const sendNewMessage = async (
   auth: string,
   newMessage: SendMessageModel
 ) => {
-  return await post(baseUrl + "sendMessage?token=" + auth, newMessage);
+  return await post<MessageModel>(
+    baseUrl + "sendMessage?token=" + auth,
+    newMessage
+  );
 };

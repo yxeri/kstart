@@ -18,16 +18,23 @@ export default async function handler(
     "Content-Type": "application/json",
   };
 
-  const newMessage: SendMessageModel = {
-    data: { message: message, messageType: messageType, roomId: roomId },
+  const data = {
+    data: {
+      message: {
+        text: message,
+        roomId: roomId,
+      },
+      messageType: messageType,
+      roomId: roomId,
+    },
   };
 
-  console.log("newMessage", newMessage);
+  console.log("newMessage", data);
 
   fetch(baseUrl + "messages", {
     method: "POST",
     headers: config,
-    body: JSON.stringify(newMessage),
+    body: JSON.stringify(data),
   })
     .then((response) => {
       console.log("REEEESPONSEE", response);
@@ -43,12 +50,18 @@ export default async function handler(
     })
     .then((result) => {
       if (result.status) {
+        console.log("3");
+
         res.status(result.status).send(result);
       } else {
+        console.log("4");
+
         res.send(result);
       }
     })
     .catch((error) => {
+      console.log("5");
+
       res.send(error);
     });
 }
