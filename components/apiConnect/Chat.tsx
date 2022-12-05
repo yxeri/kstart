@@ -1,6 +1,10 @@
 import { getCookie } from "cookies-next";
 import { useEffect, useRef, useState } from "react";
-import { MessageModel, SendMessageModel } from "../../models/chatModels";
+import {
+  MessageModel,
+  SendMessageModel,
+  TempMessageModel,
+} from "../../models/chatModels";
 
 import { UserModel } from "../../models/otherUsersModel";
 import {
@@ -14,6 +18,7 @@ import { Message } from "./Message";
 import { ChatMessageForm } from "./ChatMessageForm";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { loggedInUser, rooms } from "../../atoms/atoms";
+import { TempMessage } from "./TempMessage";
 
 const token = getCookie("token") as string;
 
@@ -21,6 +26,14 @@ export const Chat = () => {
   const [allUsers, setAllUsers] = useState(new Map<string, UserModel>());
   const [messages, setMessages] = useState<MessageModel[]>([]);
   const userInformation = useRecoilValue(loggedInUser);
+  const [tempMess, setTempMess] = useState<TempMessageModel>({
+    data: {
+      message: [],
+      messageType: "",
+      roomId: "",
+    },
+  });
+  const [showTempMess, setShowTempMess] = useState(false);
   const [myRooms, setMyRooms] = useRecoilState(rooms);
 
   const useChatScroll = (dep: MessageModel[]) => {
@@ -59,7 +72,6 @@ export const Chat = () => {
       getAllMessages(token)
         .then((response) => {
           setMessages(response.data.messages);
-          console.log("messages: ", response.data.messages);
         })
         .catch((error) => {
           console.log("messageError: ", error);
@@ -88,21 +100,23 @@ export const Chat = () => {
   ]);
 
   const sendMessage = (newMessage: SendMessageModel) => {
+    setTempMess(newMessage);
+    setShowTempMess(true);
     sendNewMessage(token, newMessage)
       .then((response) => {
-        setMessages((messages) => [...messages, response]);
+        setMessages((messages) => [...messages, response.data.data.message]);
+        setShowTempMess(false);
       })
       .catch((error) => {
         console.log("messageError: ", error);
       });
   };
 
-  const message = messages
-    .map((mess) => {
-      const user = allUsers.get(mess.ownerId);
-      return user && <Message key={mess._id} user={user} message={mess} />;
-    })
-    .filter((c) => c) as JSX.Element[];
+  const message = messages.map((mess) => {
+    const user = allUsers.get(mess.ownerId);
+    return user && <Message key={mess._id} user={user} message={mess} />;
+  });
+  /* .filter((c) => c) as JSX.Element[]; */
 
   return (
     <Box
@@ -132,6 +146,7 @@ export const Chat = () => {
     >
       <Box css={{ display: "flex", flexDirection: "column", gap: "13px" }}>
         {message}
+        {showTempMess && <TempMessage tempMess={tempMess} />}
       </Box>
       <ChatMessageForm sendMessage={sendMessage} />
     </Box>

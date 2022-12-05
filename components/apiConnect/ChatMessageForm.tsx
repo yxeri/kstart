@@ -1,7 +1,5 @@
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { useRecoilValue } from "recoil";
-import { loggedInUser, rooms } from "../../atoms/atoms";
 import { SendMessageModel } from "../../models/chatModels";
 import { Button } from "../styledComponents/Button";
 import { StyledForm } from "../styledComponents/StyledForm";
@@ -25,7 +23,6 @@ export const ChatMessageForm = ({ sendMessage }: ChatMessageFormProps) => {
         roomId: "111111111111111111111110",
       },
     };
-    console.log("newMessage: ", newMessage);
 
     sendMessage(newMessage);
     reset();
